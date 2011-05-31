@@ -1,0 +1,43 @@
+#############################################################
+################### OFFICIAL DEBIAN REPOS ###################
+#############################################################
+
+###### Debian Main Repos
+deb http://ftp.fr.debian.org/debian/ sid main contrib non-free
+deb-src http://ftp.fr.debian.org/debian/ sid main contrib non-free
+
+###### Debian Update Repos
+deb http://security.debian.org/ sid/updates main contrib non-free
+deb http://ftp.fr.debian.org/debian/ sid-proposed-updates main contrib non-free
+deb-src http://security.debian.org/ sid/updates main contrib non-free
+deb-src http://ftp.fr.debian.org/debian/ sid-proposed-updates main contrib non-free
+
+##############################################################
+##################### UNOFFICIAL  REPOS ######################
+##############################################################
+
+###### 3rd Party Binary Repos
+
+#### Debian Multimedia - http://www.debian-multimedia.org/
+## Run this command: apt-get update && apt-get install debian-multimedia-keyring && apt-get update
+## and: apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 07DC563D1F41B907
+deb http://www.debian-multimedia.org sid main non-free
+deb-src http://www.debian-multimedia.org sid main
+
+#### Google Linux Software Repositories - http://www.google.com
+## Run this command: wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
+deb http://dl.google.com/linux/deb/ stable non-free main
+
+#### Google Linux Software Repositories (Testing) - http://www.google.com
+## Run this command: wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
+deb http://dl.google.com/linux/deb/ testing non-free
+
+#### Spotify Repositories - http://www.spotify.com/fr/download/previews/
+## Run this command: apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 4E9CFF4E
+deb http://repository.spotify.com stable non-free
+
+#### Hotot - http://all-tech-thoughts.blogspot.com/2011/01/install-hotot-twitter-client-in-debian.html
+## Run this command: apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 41011AE2
+deb http://ppa.launchpad.net/hotot-team/ppa/ubuntu maverick main
+deb-src http://ppa.launchpad.net/hotot-team/ppa/ubuntu maverick main
+
