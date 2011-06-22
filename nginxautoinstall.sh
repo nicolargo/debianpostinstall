@@ -6,12 +6,13 @@
 #
 # Syntaxe: # su - -c "./nginxautoinstall.sh"
 # Syntaxe: or # sudo ./nginxautoinstall.sh
-VERSION="1.1"
+VERSION="1.2"
 
 ##############################
 # Version de NGinx a installer
 
-NGINX_VERSION="0.8.54"
+#NGINX_VERSION="0.8.54"
+NGINX_VERSION="1.0.4"
 
 ##############################
 # Debut de l'installation
@@ -49,7 +50,7 @@ fi
 aptitude update
 
 # Pre-requis
-aptitude install build-essential libpcre3-dev libssl-dev zlib1g-dev 
+aptitude install build-essential libpcre3-dev libssl-dev zlib1g-dev
 aptitude install php5-cli php5-common php5-mysql php5-suhosin php5-fpm php5-cgi php-pear php5-xcache php5-gd php5-curl
 aptitude install libcache-memcached-perl php5-memcache memcached
 
@@ -57,11 +58,11 @@ aptitude install libcache-memcached-perl php5-memcache memcached
 wget http://sysoev.ru/nginx/nginx-$NGINX_VERSION.tar.gz
 
 # Extract
-tar zxvf nginx-$NGINX_VERSION.tar.gz 
+tar zxvf nginx-$NGINX_VERSION.tar.gz
 
 # Configure
 cd nginx-$NGINX_VERSION
-./configure   --conf-path=/etc/nginx/nginx.conf   --error-log-path=/var/log/nginx/error.log   --pid-path=/var/run/nginx.pid   --lock-path=/var/lock/nginx.lock   --http-log-path=/var/log/nginx/access.log   --with-http_dav_module   --http-client-body-temp-path=/var/lib/nginx/body   --with-http_ssl_module   --http-proxy-temp-path=/var/lib/nginx/proxy   --with-http_stub_status_module   --http-fastcgi-temp-path=/var/lib/nginx/fastcgi   --with-debug   --with-http_flv_module 
+./configure   --conf-path=/etc/nginx/nginx.conf   --error-log-path=/var/log/nginx/error.log   --pid-path=/var/run/nginx.pid   --lock-path=/var/lock/nginx.lock   --http-log-path=/var/log/nginx/access.log   --with-http_dav_module   --http-client-body-temp-path=/var/lib/nginx/body   --with-http_ssl_module   --http-proxy-temp-path=/var/lib/nginx/proxy   --with-http_stub_status_module   --http-fastcgi-temp-path=/var/lib/nginx/fastcgi   --with-debug   --with-http_flv_module
 
 # Compile
 make
