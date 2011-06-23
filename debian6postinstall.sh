@@ -71,8 +71,9 @@ gpg --keyserver pgp.mit.edu --recv-keys 0xd66b746e && gpg --export --armor 0xd66
 # Virtualbox
 wget -q http://download.virtualbox.org/virtualbox/debian/oracle_vbox.asc -O- | apt-key add -
 # Hotot
+apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 41011AE2
+# Spotify
 apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 4E9CFF4E
-apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 07DC563D1F41B907
 
 # Mise a jour des depots
 #-----------------------
