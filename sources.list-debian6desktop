@@ -41,6 +41,16 @@ deb http://download.skype.com/linux/repos/debian/ stable non-free
 ## Run this command: wget -q http://download.virtualbox.org/virtualbox/debian/oracle_vbox.asc -O- | apt-key add -
 deb http://download.virtualbox.org/virtualbox/debian squeeze contrib 
 
+#### Spotify Repositories - http://www.spotify.com/fr/download/previews/
+## Run this command: apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 4E9CFF4E
+deb http://repository.spotify.com stable non-free
+
+### Hotot - http://all-tech-thoughts.blogspot.com/2011/01/install-hotot-twitter-client-in-debian.html
+## Run this command: apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 41011AE2
+deb http://ppa.launchpad.net/hotot-team/ppa/ubuntu maverick main
+deb-src http://ppa.launchpad.net/hotot-team/ppa/ubuntu maverick main
+
+
 
 ####### 3rd Party Source Repos
 

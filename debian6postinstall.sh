@@ -6,7 +6,7 @@
 #
 # Syntaxe: # su - -c "./siddesktoppostinstall.sh"
 # Syntaxe: or # sudo ./siddesktoppostinstall.sh
-VERSION="1.1"
+VERSION="1.2"
 
 #=============================================================================
 # Liste des applications à installer
@@ -70,9 +70,9 @@ wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add
 gpg --keyserver pgp.mit.edu --recv-keys 0xd66b746e && gpg --export --armor 0xd66b746e | apt-key add -
 # Virtualbox
 wget -q http://download.virtualbox.org/virtualbox/debian/oracle_vbox.asc -O- | apt-key add -
-# Others
-apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 07DC563D1F41B907
+# Hotot
 apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 4E9CFF4E
+apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 07DC563D1F41B907
 
 # Mise a jour des depots
 #-----------------------
