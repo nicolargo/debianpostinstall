@@ -12,19 +12,18 @@ VERSION="1.1"
 # Liste des applications à installer
 # A adapter à vos besoins...
 #-----------------------------------------------------------------------------
-
 LISTE=""
+
 # Theme GTK: Equinox +
 LISTE=$LISTE" conky-all"
 EQUINOX_ENGINE_VERSION="1.50"
 EQUINOX_THEME_VERSION="1.50"
 FAENZA_VERSION="0.9.2"
+
 # Terminator
 LISTE=$LISTE" terminator"
 # Chromium Web Browser
-LISTE=$LISTE" chromium-browser chromium-browser-l10n"
-# Firefox 5
-LISTE=$LISTE" iceweasel"
+LISTE=$LISTE" chromium-browser chromium-browser-l10n flashplugin-nonfree"
 # Hotot
 LISTE=$LISTE" hotot"
 # Spotify
@@ -74,7 +73,6 @@ wget -q http://download.virtualbox.org/virtualbox/debian/oracle_vbox.asc -O- | a
 # Others
 apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 07DC563D1F41B907
 apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 4E9CFF4E
-wget -q http://download.virtualbox.org/virtualbox/debian/oracle_vbox.asc -O- | apt-key add -
 
 # Mise a jour des depots
 #-----------------------
