@@ -3,14 +3,14 @@
 #############################################################
 
 ###### Debian Main Repos
-deb http://ftp.fr.debian.org/debian/ sid main contrib non-free
-deb-src http://ftp.fr.debian.org/debian/ sid main contrib non-free
+deb http://ftp.fr.debian.org/debian/ squeeze main contrib non-free 
+deb-src http://ftp.fr.debian.org/debian/ squeeze main contrib non-free 
 
 ###### Debian Update Repos
-deb http://security.debian.org/ sid/updates main contrib non-free
-deb http://ftp.fr.debian.org/debian/ sid-proposed-updates main contrib non-free
-deb-src http://security.debian.org/ sid/updates main contrib non-free
-deb-src http://ftp.fr.debian.org/debian/ sid-proposed-updates main contrib non-free
+deb http://security.debian.org/ squeeze/updates main contrib non-free 
+deb http://ftp.fr.debian.org/debian/ squeeze-proposed-updates main contrib non-free 
+deb-src http://security.debian.org/ squeeze/updates main contrib non-free 
+deb-src http://ftp.fr.debian.org/debian/ squeeze-proposed-updates main contrib non-free 
 
 ##############################################################
 ##################### UNOFFICIAL  REPOS ######################
@@ -18,26 +18,33 @@ deb-src http://ftp.fr.debian.org/debian/ sid-proposed-updates main contrib non-f
 
 ###### 3rd Party Binary Repos
 
+#### Debian Backports - http://backports.debian.org/
+deb http://backports.debian.org/debian-backports squeeze-backports main 
+
 #### Debian Multimedia - http://www.debian-multimedia.org/
 ## Run this command: apt-get update && apt-get install debian-multimedia-keyring && apt-get update
-## and: apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 07DC563D1F41B907
-deb http://www.debian-multimedia.org sid main non-free
-deb-src http://www.debian-multimedia.org sid main
+deb http://www.debian-multimedia.org stable main non-free
+
+#### Dotdeb - http://www.dotdeb.org
+## Run this command: wget -q -O - http://www.dotdeb.org/dotdeb.gpg | apt-key add -
+deb http://packages.dotdeb.org oldstable all
 
 #### Google Linux Software Repositories - http://www.google.com
 ## Run this command: wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
 deb http://dl.google.com/linux/deb/ stable non-free main
 
-#### Google Linux Software Repositories (Testing) - http://www.google.com
-## Run this command: wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
-deb http://dl.google.com/linux/deb/ testing non-free
+#### Skype - http://www.skype.com
+## Run this command: gpg --keyserver pgp.mit.edu --recv-keys 0xd66b746e && gpg --export --armor 0xd66b746e | apt-key add -
+deb http://download.skype.com/linux/repos/debian/ stable non-free
 
-#### Spotify Repositories - http://www.spotify.com/fr/download/previews/
-## Run this command: apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 4E9CFF4E
-deb http://repository.spotify.com stable non-free
+#### VirtualBox - http://www.virtualbox.org
+## Run this command: wget -q http://download.virtualbox.org/virtualbox/debian/oracle_vbox.asc -O- | apt-key add -
+deb http://download.virtualbox.org/virtualbox/debian squeeze contrib 
 
-#### Hotot - http://all-tech-thoughts.blogspot.com/2011/01/install-hotot-twitter-client-in-debian.html
-## Run this command: apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 41011AE2
-deb http://ppa.launchpad.net/hotot-team/ppa/ubuntu maverick main
-deb-src http://ppa.launchpad.net/hotot-team/ppa/ubuntu maverick main
+
+####### 3rd Party Source Repos
+
+#### Dotdeb (Source) - http://www.dotdeb.org
+## Run this command: wget -q -O - http://www.dotdeb.org/dotdeb.gpg | apt-key add -
+deb-src http://packages.dotdeb.org oldstable all
 

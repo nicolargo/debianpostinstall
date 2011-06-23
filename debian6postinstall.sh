@@ -23,6 +23,8 @@ FAENZA_VERSION="0.9.2"
 LISTE=$LISTE" terminator"
 # Chromium Web Browser
 LISTE=$LISTE" chromium-browser chromium-browser-l10n"
+# Firefox 5
+LISTE=$LISTE" iceweasel"
 # Hotot
 LISTE=$LISTE" hotot"
 # Spotify
@@ -54,12 +56,27 @@ wget -q -O /etc/apt/sources.list http://svn.nicolargo.com/debianpostinstall/trun
 # Erreur Dynamic MMap ran out of room
 echo 'APT::Cache-Limit "12500000";' >> /etc/apt/apt.conf
 
-# Mise à jour des repos
+# Installation des cles
 #----------------------
+
+# Debian multimedia
 apt-get update && apt-get install debian-multimedia-keyring && apt-get update
-apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 07DC563D1F41B907
+# Dotdeb
+wget -q -O - http://www.dotdeb.org/dotdeb.gpg | apt-key add -
+# Google
 wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
+# Skype
+gpg --keyserver pgp.mit.edu --recv-keys 0xd66b746e && gpg --export --armor 0xd66b746e | apt-key add -
+# Virtualbox
+wget -q http://download.virtualbox.org/virtualbox/debian/oracle_vbox.asc -O- | apt-key add -
+# Others
+apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 07DC563D1F41B907
 apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 4E9CFF4E
+wget -q http://download.virtualbox.org/virtualbox/debian/oracle_vbox.asc -O- | apt-key add -
+
+# Mise a jour des depots
+#-----------------------
+
 apt-get update
 apt-get upgrade
 
