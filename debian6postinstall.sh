@@ -6,7 +6,7 @@
 #
 # Syntaxe: # su - -c "./siddesktoppostinstall.sh"
 # Syntaxe: or # sudo ./siddesktoppostinstall.sh
-VERSION="1.3"
+VERSION="1.31"
 
 #=============================================================================
 # Liste des applications à installer
@@ -136,6 +136,9 @@ cp "Conky-lua 2011 next generation/Debian/logo.png" $HOME_PATH/.conky
 cp "Conky-lua 2011 next generation/Debian/clock_rings.lua" $HOME_PATH/.lua/scripts
 cp "Conky-lua 2011 next generation/Debian/conkyrc" $HOME_PATH/.conkyrc
 rm -rf "141411-Conky-lua 2011 next generation.tar.gz" "Conky-lua 2011 next generation"
+chown -R $USERNAME:$USERNAME $HOME_PATH/.lua
+chown -R $USERNAME:$USERNAME $HOME_PATH/.conky
+chown -R $USERNAME:$USERNAME $HOME_PATH/.conkyrc
 
 # Custom .bashrc
 cat >> $HOME_PATH/.bash_aliases << EOF
