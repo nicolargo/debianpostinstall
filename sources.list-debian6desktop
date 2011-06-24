@@ -32,6 +32,7 @@ deb http://packages.dotdeb.org oldstable all
 #### Google Linux Software Repositories - http://www.google.com
 ## Run this command: wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
 deb http://dl.google.com/linux/deb/ stable non-free main
+deb http://dl.google.com/linux/deb/ testing non-free
 
 #### Skype - http://www.skype.com
 ## Run this command: gpg --keyserver pgp.mit.edu --recv-keys 0xd66b746e && gpg --export --armor 0xd66b746e | apt-key add -
@@ -50,6 +51,9 @@ deb http://repository.spotify.com stable non-free
 deb http://ppa.launchpad.net/hotot-team/ppa/ubuntu maverick main
 deb-src http://ppa.launchpad.net/hotot-team/ppa/ubuntu maverick main
 
+### Chromium - From Ubuntu PPA
+## Run this command: apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 4E5E17B5
+deb http://ppa.launchpad.net/chromium-daily/dev/ubuntu lucid main
 
 
 ####### 3rd Party Source Repos
