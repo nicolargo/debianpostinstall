@@ -1,11 +1,11 @@
 #!/bin/bash
-# Mon script de post installation serveur Debian 5.0 aka Lenny
+# Mon script de post installation serveur Debian 6.0 aka Squeeze
 #
-# Nicolargo - 01/2011
+# Nicolargo - 06/2011
 # GPL
 #
-# Syntaxe: # su - -c "./lennyserverpostinstall.sh"
-# Syntaxe: or # sudo ./lennyserverpostinstall.sh
+# Syntaxe: # su - -c "./squeezeserverpostinstall.sh"
+# Syntaxe: or # sudo ./squeezeserverpostinstall.sh
 VERSION="1.0"
 
 #=============================================================================
