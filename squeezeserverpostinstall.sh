@@ -6,7 +6,7 @@
 #
 # Syntaxe: # su - -c "./squeezeserverpostinstall.sh"
 # Syntaxe: or # sudo ./squeezeserverpostinstall.sh
-VERSION="1.2"
+VERSION="1.3"
 
 #=============================================================================
 # Liste des applications à installer: A adapter a vos besoins
@@ -54,6 +54,7 @@ sed -i 's/destemail = root@localhost/destemail = '$MAIL'/g' /etc/fail2ban/jail.c
 echo "Autres action à faire si besoin:"
 echo "- Securisé le serveur avec un Firewall"
 echo "  > http://www.debian.org/doc/manuals/securing-debian-howto/ch-sec-services.en.html"
+echo "  > https://raw.github.com/nicolargo/debianpostinstall/master/firewall.sh"
 echo "- Securisé le daemon SSH"
 echo "  > http://www.debian-administration.org/articles/455"
 
