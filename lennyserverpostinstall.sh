@@ -6,13 +6,13 @@
 #
 # Syntaxe: # su - -c "./lennyserverpostinstall.sh"
 # Syntaxe: or # sudo ./lennyserverpostinstall.sh
-VERSION="1.0"
+VERSION="1.1"
 
 #=============================================================================
 # Liste des applications à installer: A adapter a vos besoins
 # Voir plus bas les applications necessitant un depot specifique
 # Securite
-LISTE="cront-apt fail2ban"
+LISTE="cron-apt fail2ban"
 #=============================================================================
 
 # Test que le script est lance en root

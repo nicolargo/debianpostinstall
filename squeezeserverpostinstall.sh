@@ -6,13 +6,13 @@
 #
 # Syntaxe: # su - -c "./squeezeserverpostinstall.sh"
 # Syntaxe: or # sudo ./squeezeserverpostinstall.sh
-VERSION="1.0"
+VERSION="1.1"
 
 #=============================================================================
 # Liste des applications à installer: A adapter a vos besoins
 # Voir plus bas les applications necessitant un depot specifique
 # Securite
-LISTE="cront-apt fail2ban"
+LISTE="cron-apt fail2ban"
 #=============================================================================
 
 # Test que le script est lance en root
@@ -47,8 +47,8 @@ dpkg-reconfigure locales
 echo -n "Adresse mail pour les rapports de securite: "
 read MAIL 
 # cron-apt
-sudo sed -i 's/# MAILTO="root"/MAILTO="'$MAIL'"/g' /etc/cron-apt/config
+sed -i 's/# MAILTO="root"/MAILTO="'$MAIL'"/g' /etc/cron-apt/config
 # fail2ban
-sudo sed -i 's/destemail = root@localhost/destemail = '$MAIL'/g' /etc/fail2ban/jail.conf
+sed -i 's/destemail = root@localhost/destemail = '$MAIL'/g' /etc/fail2ban/jail.conf
 
 # Fin du script
