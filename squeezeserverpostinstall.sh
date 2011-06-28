@@ -6,7 +6,7 @@
 #
 # Syntaxe: # su - -c "./squeezeserverpostinstall.sh"
 # Syntaxe: or # sudo ./squeezeserverpostinstall.sh
-VERSION="1.1"
+VERSION="1.2"
 
 #=============================================================================
 # Liste des applications à installer: A adapter a vos besoins
@@ -50,5 +50,11 @@ read MAIL
 sed -i 's/# MAILTO="root"/MAILTO="'$MAIL'"/g' /etc/cron-apt/config
 # fail2ban
 sed -i 's/destemail = root@localhost/destemail = '$MAIL'/g' /etc/fail2ban/jail.conf
+
+echo "Autres action à faire si besoin:"
+echo "- Securisé le serveur avec un Firewall"
+echo "  > http://www.debian.org/doc/manuals/securing-debian-howto/ch-sec-services.en.html"
+echo "- Securisé le daemon SSH"
+echo "  > http://www.debian-administration.org/articles/455"
 
 # Fin du script
