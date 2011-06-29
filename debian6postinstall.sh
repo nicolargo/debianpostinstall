@@ -6,13 +6,13 @@
 #
 # Syntaxe: # su - -c "./siddesktoppostinstall.sh"
 # Syntaxe: or # sudo ./siddesktoppostinstall.sh
-VERSION="1.31"
+VERSION="1.32"
 
 #=============================================================================
 # Liste des applications à installer
 # A adapter à vos besoins...
 #-----------------------------------------------------------------------------
-LISTE=""
+LISTE="filezilla"
 
 # Theme GTK: Equinox +
 LISTE=$LISTE" conky-all"
