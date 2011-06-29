@@ -6,7 +6,7 @@
 #
 # Syntaxe: # su - -c "./siddesktoppostinstall.sh"
 # Syntaxe: or # sudo ./siddesktoppostinstall.sh
-VERSION="1.32"
+VERSION="1.33"
 
 #=============================================================================
 # Liste des applications à installer
@@ -34,7 +34,7 @@ DROPBOX_VERSION="0.6.7"
 # Multimedia: Vlc + ffmpeg
 LISTE=$LISTE" vlc ffmpeg"
 # Shutter: Capture d'image
-LISTE=$LISTE" shutter"
+LISTE=$LISTE" shutter libgoo-canvas-perl"
 # Dev
 LISTE=$LISTE" subversion git"
 
