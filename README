@@ -1,16 +1,19 @@
-<h1>debian6postinstall.sh</h1>
+debian6postinstall.sh
+=====================
 
 A simple "but usefull" post install script for Debian 6 (Squeeze).
 
 More informations here:  http://blog.nicolargo.com/2011/05/script-de-pos-installation-de-debian-desktop.html
 
-<h1>lennyserverpostinstall.sh / squeezeserverpostinstall.sh</h1>
+lennyserverpostinstall.sh / squeezeserverpostinstall.sh
+=======================================================
 
 A post install script dor Debian Server (6 Squeeze or 5 Leny):
 - lennyserverpostinstall.sh: for Debian 5
 - squeezeserverpostinstall.sh: for Debian 6
 
-<h1>NGinxAutoInstall.sh<h/h1>
+NGinxAutoInstall.sh
+===================
 
 Auto install NGinx + PHP-FPM + MemCached on Debian
 
