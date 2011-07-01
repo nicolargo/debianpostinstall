@@ -1,6 +1,0 @@
-debian6postinstall.sh: Le script post installation automatique d'un PC Desktop sous Debian 6.0
-
-lennyserverpostinstall.sh: Le script post installation d'un serveur sous Debian 5.0
-
-nginxautoinstall.sh: Installation automatique de NGinx (le serveur Web)
- * Version 1.2: NGinx version 1.0.4
