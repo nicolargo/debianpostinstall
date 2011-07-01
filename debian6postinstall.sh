@@ -7,7 +7,7 @@
 # Syntaxe: # su - -c "./debian6postinstall.sh"
 # Syntaxe: or # sudo ./debian6postinstall.sh
 
-VERSION="1.4"
+VERSION="1.41"
 
 #=============================================================================
 # Liste des applications installés par le script
@@ -59,7 +59,7 @@ LISTE=$LISTE" subversion git"
 # Variables globales
 #-------------------
 
-HOME_PATH=`grep $USERNAME /etc/passwd | awk -F':' '{ print $6 }'`
+HOME_PATH=`grep $USERNAME /etc/passwd | cut -d: -f6`
 APT_GET="apt-get -q -y"
 DATE=`date +"%Y%m%d%H%M%S"`
 LOG_FILE="/tmp/debian6postinstall-$DATE.log"
