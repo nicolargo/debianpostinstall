@@ -7,7 +7,7 @@
 # Syntaxe: # su - -c "./debian6postinstall.sh"
 # Syntaxe: or # sudo ./debian6postinstall.sh
 
-VERSION="1.41"
+VERSION="1.42"
 
 #=============================================================================
 # Liste des applications installés par le script
@@ -61,6 +61,7 @@ LISTE=$LISTE" subversion git"
 
 HOME_PATH=`grep $USERNAME /etc/passwd | cut -d: -f6`
 APT_GET="apt-get -q -y"
+WGET="wget --no-check-certificate"
 DATE=`date +"%Y%m%d%H%M%S"`
 LOG_FILE="/tmp/debian6postinstall-$DATE.log"
 
@@ -125,7 +126,7 @@ echo "Debut du script" > $LOG_FILE
 displaytitle "-- Téléchargement du fichier sources.list
 -- $SOURCES_LIST"
 displayandexec "Archivage du fichier sources.list actuel" cp /etc/apt/sources.list /etc/apt/sources.list-BACKUP
-displayandexec "Téléchargement du nouveau fichier sources.list" wget -q -O /etc/apt/sources.list $SOURCES_LIST
+displayandexec "Téléchargement du nouveau fichier sources.list" $WGET -O /etc/apt/sources.list $SOURCES_LIST
 
 # Erreur Dynamic MMap ran out of room
 echo 'APT::Cache-Limit "12500000";' >> /etc/apt/apt.conf
@@ -136,13 +137,13 @@ echo 'APT::Cache-Limit "12500000";' >> /etc/apt/apt.conf
 displaytitle "-- Installation des clés nécessaires au sources.list"
 
 # Dotdeb
-displayandexec "Installation clés du dépôt Dotdeb" sh -c "wget -q -O - http://www.dotdeb.org/dotdeb.gpg | apt-key add -"
+displayandexec "Installation clés du dépôt Dotdeb" sh -c "$WGET -O - http://www.dotdeb.org/dotdeb.gpg | apt-key add -"
 # Google
-displayandexec "Installation clés du dépôt Google" sh -c "wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -"
+displayandexec "Installation clés du dépôt Google" sh -c "$WGET -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -"
 # Skype
 displayandexec "Installation clés du dépôt Skype" sh -c "gpg --keyserver pgp.mit.edu --recv-keys 0xd66b746e && gpg --export --armor 0xd66b746e | apt-key add -"
 # Virtualbox
-displayandexec "Installation clés du dépôt VirtualBox" sh -c "wget -q http://download.virtualbox.org/virtualbox/debian/oracle_vbox.asc -O- | apt-key add -"
+displayandexec "Installation clés du dépôt VirtualBox" sh -c "$WGET http://download.virtualbox.org/virtualbox/debian/oracle_vbox.asc -O- | apt-key add -"
 # Hotot
 displayandexec "Installation clés du dépôt Hotot" sh -c "apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 41011AE2"
 # Spotify
@@ -173,7 +174,7 @@ displayandexec "Installation des logiciels" $APT_GET install $LISTE
 
 displaytitle "-- Compilation de Dropbox depuis les sources"
 
-displayandexec "Téléchargement de Dropbox v$DROPBOX_VERSION" wget -O nautilus-dropbox-$DROPBOX_VERSION.tar.bz2 http://www.dropbox.com/download?dl=packages/nautilus-dropbox-$DROPBOX_VERSION.tar.bz2
+displayandexec "Téléchargement de Dropbox v$DROPBOX_VERSION" $WGET -O nautilus-dropbox-$DROPBOX_VERSION.tar.bz2 http://www.dropbox.com/download?dl=packages/nautilus-dropbox-$DROPBOX_VERSION.tar.bz2
 displayandexec "Décompression de Dropbox v$DROPBOX_VERSION" sh -c "bzip2 -d nautilus-dropbox-$DROPBOX_VERSION.tar.bz2 ; tar xvf nautilus-dropbox-$DROPBOX_VERSION.tar"
 cd nautilus-dropbox-$DROPBOX_VERSION
 displayandexec "Configuration de Dropbox v$DROPBOX_VERSION" ./configure
@@ -188,24 +189,24 @@ rm -rf nautilus-dropbox-$DROPBOX_VERSION nautilus-dropbox-$DROPBOX_VERSION.tar
 displaytitle "-- Customisation du système"
 
 # GTK Theme
-displayandexec "Téléchargement Equinox Engine v$EQUINOX_ENGINE_VERSION" wget http://gnome-look.org/CONTENT/content-files/121881-equinox-$EQUINOX_ENGINE_VERSION.tar.gz
+displayandexec "Téléchargement Equinox Engine v$EQUINOX_ENGINE_VERSION" $WGET http://gnome-look.org/CONTENT/content-files/121881-equinox-$EQUINOX_ENGINE_VERSION.tar.gz
 displayandexec "Décompression Equinox Engine v$EQUINOX_ENGINE_VERSION" tar zxvf 121881-equinox-$EQUINOX_ENGINE_VERSION.tar.gz
 cd equinox-$EQUINOX_ENGINE_VERSION
 displayandexec "Configuration Equinox Engine v$EQUINOX_ENGINE_VERSION" ./configure --prefix=/usr --enable-animation
 displayandexec "Compilation/Installation Equinox Engine v$EQUINOX_ENGINE_VERSION" make install
 rm -rf 121881-equinox-$EQUINOX_ENGINE_VERSION.tar.gz equinox-$EQUINOX_ENGINE_VERSION
-displayandexec "Téléchargement Equinox Theme v$EQUINOX_THEME_VERSION" wget http://gnome-look.org/CONTENT/content-files/140449-equinox-themes-$EQUINOX_THEME_VERSION.tar.gz
+displayandexec "Téléchargement Equinox Theme v$EQUINOX_THEME_VERSION" $WGET http://gnome-look.org/CONTENT/content-files/140449-equinox-themes-$EQUINOX_THEME_VERSION.tar.gz
 displayandexec "Décompression Equinox Theme v$EQUINOX_THEME_VERSION" tar zxvf 140449-equinox-themes-$EQUINOX_THEME_VERSION.tar.gz
 displayandexec "Installation Equinox Theme v$EQUINOX_THEME_VERSION" cp -R Equinox* /usr/share/themes/
 rm -rf 140449-equinox-themes-$EQUINOX_THEME_VERSION.tar.gz
-displayandexec "Téléchargement icones Faenza v$FAENZA_VERSION" wget http://faenza-icon-theme.googlecode.com/files/faenza-icon-theme_$FAENZA_VERSION.tar.gz
+displayandexec "Téléchargement icones Faenza v$FAENZA_VERSION" $WGET http://faenza-icon-theme.googlecode.com/files/faenza-icon-theme_$FAENZA_VERSION.tar.gz
 displayandexec "Décompression icones Faenza v$FAENZA_VERSION" tar zxvf faenza-icon-theme_$FAENZA_VERSION.tar.gz
 displayandexec "Installation icones Faenza v$FAENZA_VERSION" cp -R Faenza* /usr/share/icons/
 rm -rf faenza-icon-theme_$FAENZA_VERSION.tar.gz Faenza* AUTHORS COPYING ChangeLog README
 
 # Conky
 # Theme LUA 2011 - http://gnome-look.org/content/show.php?content=141411
-displayandexec "Téléchargement théme Conky" wget http://gnome-look.org/CONTENT/content-files/141411-Conky-lua%202011%20next%20generation.tar.gz
+displayandexec "Téléchargement théme Conky" $WGET http://gnome-look.org/CONTENT/content-files/141411-Conky-lua%202011%20next%20generation.tar.gz
 displayandexec "Décompression théme Conky" tar zxvf "141411-Conky-lua 2011 next generation.tar.gz"
 mkdir -p $HOME_PATH/.lua
 mkdir -p $HOME_PATH/.lua/scripts
