@@ -7,7 +7,7 @@
 # Syntaxe: # su - -c "./debian6postinstall.sh"
 # Syntaxe: or # sudo ./debian6postinstall.sh
 
-VERSION="1.42"
+VERSION="1.43"
 
 #=============================================================================
 # Liste des applications installés par le script
@@ -216,6 +216,9 @@ rm -rf "141411-Conky-lua 2011 next generation.tar.gz" "Conky-lua 2011 next gener
 chown -fR $USERNAME:$USERNAME $HOME_PATH/.lua
 chown -fR $USERNAME:$USERNAME $HOME_PATH/.conky
 chown -fR $USERNAME:$USERNAME $HOME_PATH/.conkyrc
+
+# Connect Spotify to Chromium
+displayandexec "Configuration de Chromium pour ouvrir les lien Spotify" sh -c "gconftool-2 -t string -s /desktop/gnome/url-handlers/spotify/command '/usr/bin/spotify -uri %s' ; gconftool-2 -t bool -s /desktop/gnome/url-handlers/spotify/needs_terminal false ; gconftool-2 -t bool -s /desktop/gnome/url-handlers/spotify/enabled true"
 
 # Custom .bashrc
 cat >> $HOME_PATH/.bash_aliases << EOF
