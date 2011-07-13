@@ -7,7 +7,7 @@
 # Syntaxe: # su - -c "./debian6postinstall.sh"
 # Syntaxe: or # sudo ./debian6postinstall.sh
 
-VERSION="1.47"
+VERSION="1.48"
 
 #=============================================================================
 # Liste des applications installés par le script
@@ -231,6 +231,9 @@ chown -fR $USERNAME:$USERNAME $HOME_PATH/.conkyrc
 displayandexec "Configuration de Chromium pour ouvrir les lien Spotify" sh -c "gconftool-2 -t string -s /desktop/gnome/url-handlers/spotify/command '/usr/bin/spotify -uri %s' ; gconftool-2 -t bool -s /desktop/gnome/url-handlers/spotify/needs_terminal false ; gconftool-2 -t bool -s /desktop/gnome/url-handlers/spotify/enabled true"
 
 # Install TextAdept
+if [ `arch` == "x86_64" ]; then
+  TEXTADEPT_VERSION=$TEXTADEPT_VERSION".x86_64"
+fi
 displayandexec "Téléchargement de TextAdept v$TEXTADEPT_VERSION" $WGET http://textadept.googlecode.com/files/textadept_$TEXTADEPT_VERSION.tgz
 displayandexec "Installation de TextAdept v$TEXTADEPT_VERSION" sh -c "tar zxvf textadept_$TEXTADEPT_VERSION.tgz ; rm -rf /opt/textadept ; mv textadept_$TEXTADEPT_VERSION /opt/textadept ; rm -f /usr/local/bin/textadept ; ln -s /opt/textadept/textadept /usr/local/bin/textadept"
 
