@@ -7,7 +7,7 @@
 # Syntaxe: # su - -c "./debian6postinstall.sh"
 # Syntaxe: or # sudo ./debian6postinstall.sh
 
-VERSION="1.44"
+VERSION="1.45"
 
 #=============================================================================
 # Liste des applications installés par le script
@@ -25,6 +25,9 @@ LISTE=$LISTE" conky-all"
 EQUINOX_ENGINE_VERSION="1.50"
 EQUINOX_THEME_VERSION="1.50"
 FAENZA_VERSION="0.9.2"
+
+# Gnome-Do
+LISTE=$LISTE" gnome-do gnome-do-plugins"
 
 # GStreamer: la totale
 LISTE=$LISTE" "`apt-cache search gstreamer | awk '{ print $1 }' | grep ^gstreamer | xargs -eol`
