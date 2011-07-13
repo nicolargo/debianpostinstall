@@ -7,7 +7,7 @@
 # Syntaxe: # su - -c "./debian6postinstall.sh"
 # Syntaxe: or # sudo ./debian6postinstall.sh
 
-VERSION="1.46"
+VERSION="1.47"
 
 #=============================================================================
 # Liste des applications installés par le script
@@ -57,11 +57,12 @@ LISTE=$LISTE" vlc ffmpeg"
 # Shutter: Capture d'image
 LISTE=$LISTE" shutter libgoo-canvas-perl"
 
-# Dev
-LISTE=$LISTE" subversion git"
-
 # OpenVPN (je l'utilise pour monter mon VPNTunnel)
 LISTE=$LISTE" openvpn resolvconf network-manager-openvpn-gnome"
+
+# Dev
+LISTE=$LISTE" subversion git"
+TEXTADEPT_VERSION="3.9"
 
 #=============================================================================
 
@@ -83,7 +84,7 @@ displaymessage() {
 
 displaytitle() {
   displaymessage "------------------------------------------------------------------------------"
-  displaymessage "$*"  
+  displaymessage "$*"
   displaymessage "------------------------------------------------------------------------------"
 
 }
@@ -107,13 +108,13 @@ displayandexec() {
   local message=$1
   echo -n "[En cours] $message"
   shift
-  $* >> $LOG_FILE 2>&1 
+  $* >> $LOG_FILE 2>&1
   local ret=$?
   if [ $ret -ne 0 ]; then
     echo -e "\r\e[0;31m   [ERROR]\e[0m $message"
   else
     echo -e "\r\e[0;32m      [OK]\e[0m $message"
-  fi 
+  fi
   return $ret
 }
 
@@ -228,6 +229,10 @@ chown -fR $USERNAME:$USERNAME $HOME_PATH/.conkyrc
 
 # Connect Spotify to Chromium
 displayandexec "Configuration de Chromium pour ouvrir les lien Spotify" sh -c "gconftool-2 -t string -s /desktop/gnome/url-handlers/spotify/command '/usr/bin/spotify -uri %s' ; gconftool-2 -t bool -s /desktop/gnome/url-handlers/spotify/needs_terminal false ; gconftool-2 -t bool -s /desktop/gnome/url-handlers/spotify/enabled true"
+
+# Install TextAdept
+displayandexec "Téléchargement de TextAdept v$TEXTADEPT_VERSION" $WGET http://textadept.googlecode.com/files/textadept_$TEXTADEPT_VERSION.tgz
+displayandexec "Installation de TextAdept v$TEXTADEPT_VERSION" sh -c "tar zxvf textadept_$TEXTADEPT_VERSION.tgz ; rm -rf /opt/textadept ; mv textadept_$TEXTADEPT_VERSION /opt/textadept ; rm -f /usr/local/bin/textadept ; ln -s /opt/textadept/textadept /usr/local/bin/textadept"
 
 # Custom .bashrc
 cat >> $HOME_PATH/.bash_aliases << EOF
