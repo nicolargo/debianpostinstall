@@ -7,7 +7,7 @@
 # Syntaxe: # su - -c "./debian6postinstall.sh"
 # Syntaxe: or # sudo ./debian6postinstall.sh
 
-VERSION="1.45"
+VERSION="1.46"
 
 #=============================================================================
 # Liste des applications installés par le script
@@ -59,6 +59,9 @@ LISTE=$LISTE" shutter libgoo-canvas-perl"
 
 # Dev
 LISTE=$LISTE" subversion git"
+
+# OpenVPN (je l'utilise pour monter mon VPNTunnel)
+LISTE=$LISTE" openvpn resolvconf network-manager-openvpn-gnome"
 
 #=============================================================================
 
