@@ -7,7 +7,7 @@
 # Syntaxe: # su - -c "./debian6postinstall.sh"
 # Syntaxe: or # sudo ./debian6postinstall.sh
 
-VERSION="1.48"
+VERSION="1.49"
 
 #=============================================================================
 # Liste des applications installés par le script
@@ -247,7 +247,7 @@ source $HOME_PATH/.bashrc
 echo ""
 echo "##############################################################################"
 echo ""
-echo "                            Fin de l'installation"
+echo "                            Fin du script (version $VERSION)"
 echo ""
 echo " 1) Automatiser lancement > sh -c \"sleep 20; /usr/bin/conky\" <";
 echo "    dans Système > Préférences > Application au démarrage"
