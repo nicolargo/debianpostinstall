@@ -7,7 +7,7 @@
 # Syntaxe: # su - -c "./debian6postinstall.sh"
 # Syntaxe: or # sudo ./debian6postinstall.sh
 
-VERSION="1.50"
+VERSION="1.52"
 
 #=============================================================================
 # Liste des applications installés par le script
@@ -148,21 +148,21 @@ echo 'APT::Cache-Limit "12500000";' >> /etc/apt/apt.conf
 displaytitle "-- Installation des clés nécessaires au sources.list"
 
 # Dotdeb
-displayandexec "Installation clés du dépôt Dotdeb" sh -c "$WGET -O - http://www.dotdeb.org/dotdeb.gpg | apt-key add -"
+displayandexec "Installation clés du dépôt Dotdeb" "sh -c \"$WGET -O - http://www.dotdeb.org/dotdeb.gpg | apt-key add -\""
 # Google
-displayandexec "Installation clés du dépôt Google" sh -c "$WGET -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -"
+displayandexec "Installation clés du dépôt Google" "sh -c \"$WGET -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -\""
 # Skype
-displayandexec "Installation clés du dépôt Skype" sh -c "gpg --keyserver pgp.mit.edu --recv-keys 0xd66b746e && gpg --export --armor 0xd66b746e | apt-key add -"
+displayandexec "Installation clés du dépôt Skype" "sh -c \"gpg --keyserver pgp.mit.edu --recv-keys 0xd66b746e && gpg --export --armor 0xd66b746e | apt-key add -\""
 # Virtualbox
-displayandexec "Installation clés du dépôt VirtualBox" sh -c "$WGET http://download.virtualbox.org/virtualbox/debian/oracle_vbox.asc -O- | apt-key add -"
+displayandexec "Installation clés du dépôt VirtualBox" "sh -c \"$WGET http://download.virtualbox.org/virtualbox/debian/oracle_vbox.asc -O- | apt-key add -\""
 # Hotot
-displayandexec "Installation clés du dépôt Hotot" sh -c "apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 41011AE2"
+displayandexec "Installation clés du dépôt Hotot" "sh -c \"apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 41011AE2\""
 # Spotify
-displayandexec "Installation clés du dépôt Spotify" sh -c "apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 4E9CFF4E"
+displayandexec "Installation clés du dépôt Spotify" "sh -c \"apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 4E9CFF4E\""
 # Chromium (Ubuntu PPA)
-displayandexec "Installation clés du dépôt Chromium" sh -c "apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 4E5E17B5"
+displayandexec "Installation clés du dépôt Chromium" "sh -c \"apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 4E5E17B5\""
 # Debian multimedia
-displayandexec "Installation clés du dépôt Debian Multimedia" sh -c "$APT_GET update && $APT_GET install debian-multimedia-keyring"
+displayandexec "Installation clés du dépôt Debian Multimedia" "sh -c \"$APT_GET update && $APT_GET install debian-multimedia-keyring\""
 
 # Mise a jour des depots
 #-----------------------
@@ -186,7 +186,7 @@ displayandexec "Installation des logiciels" $APT_GET install $LISTE
 displaytitle "-- Compilation de Dropbox depuis les sources"
 
 displayandexec "Téléchargement de Dropbox v$DROPBOX_VERSION" $WGET -O nautilus-dropbox-$DROPBOX_VERSION.tar.bz2 http://www.dropbox.com/download?dl=packages/nautilus-dropbox-$DROPBOX_VERSION.tar.bz2
-displayandexec "Décompression de Dropbox v$DROPBOX_VERSION" sh -c "bzip2 -d nautilus-dropbox-$DROPBOX_VERSION.tar.bz2 ; tar xvf nautilus-dropbox-$DROPBOX_VERSION.tar"
+displayandexec "Décompression de Dropbox v$DROPBOX_VERSION" "sh -c \"bzip2 -d nautilus-dropbox-$DROPBOX_VERSION.tar.bz2 ; tar xvf nautilus-dropbox-$DROPBOX_VERSION.tar\""
 cd nautilus-dropbox-$DROPBOX_VERSION
 displayandexec "Configuration de Dropbox v$DROPBOX_VERSION" ./configure
 displayandexec "Compilation de Dropbox v$DROPBOX_VERSION" make
@@ -219,24 +219,22 @@ rm -rf faenza-icon-theme_$FAENZA_VERSION.tar.gz Faenza* AUTHORS COPYING ChangeLo
 # Theme LUA 2011 - http://gnome-look.org/content/show.php?content=141411
 displayandexec "Téléchargement théme Conky" $WGET http://gnome-look.org/CONTENT/content-files/141411-Conky-lua%202011%20next%20generation.tar.gz
 displayandexec "Décompression théme Conky" tar zxvf "141411-Conky-lua 2011 next generation.tar.gz"
-mkdir -p $HOME_PATH/.lua
-mkdir -p $HOME_PATH/.lua/scripts
-mkdir -p $HOME_PATH/.conky
-displayandexec "Installation théme Conky" sh -c "cp 'Conky-lua 2011 next generation/Debian/logo.png' $HOME_PATH/.conky ; cp 'Conky-lua 2011 next generation/Debian/clock_rings.lua' $HOME_PATH/.lua/scripts ; cp 'Conky-lua 2011 next generation/Debian/conkyrc' $HOME_PATH/.conkyrc"
+displayandexec "Création des répertoires Conky" "sh -c \"mkdir -p $HOME_PATH/.lua ; mkdir -p $HOME_PATH/.lua/scripts ; mkdir -p $HOME_PATH/.conky\""
+displayandexec "Installation théme Conky" "sh -c \"cp 'Conky-lua 2011 next generation/Debian/logo.png' $HOME_PATH/.conky ; cp 'Conky-lua 2011 next generation/Debian/clock_rings.lua' $HOME_PATH/.lua/scripts ; cp 'Conky-lua 2011 next generation/Debian/conkyrc' $HOME_PATH/.conkyrc\""
 rm -rf "141411-Conky-lua 2011 next generation.tar.gz" "Conky-lua 2011 next generation"
 chown -fR $USERNAME:$USERNAME $HOME_PATH/.lua
 chown -fR $USERNAME:$USERNAME $HOME_PATH/.conky
 chown -fR $USERNAME:$USERNAME $HOME_PATH/.conkyrc
 
 # Connect Spotify to Chromium
-displayandexec "Configuration de Chromium pour ouvrir les lien Spotify" sh -c "gconftool-2 -t string -s /desktop/gnome/url-handlers/spotify/command '/usr/bin/spotify -uri %s' ; gconftool-2 -t bool -s /desktop/gnome/url-handlers/spotify/needs_terminal false ; gconftool-2 -t bool -s /desktop/gnome/url-handlers/spotify/enabled true"
+displayandexec "Configuration de Chromium pour ouvrir les lien Spotify" "sh -c \"gconftool-2 -t string -s /desktop/gnome/url-handlers/spotify/command '/usr/bin/spotify -uri %s' ; gconftool-2 -t bool -s /desktop/gnome/url-handlers/spotify/needs_terminal false ; gconftool-2 -t bool -s /desktop/gnome/url-handlers/spotify/enabled true\""
 
 # Install TextAdept
 if [ `arch` == "x86_64" ]; then
   TEXTADEPT_VERSION=$TEXTADEPT_VERSION".x86_64"
 fi
 displayandexec "Téléchargement de TextAdept v$TEXTADEPT_VERSION" $WGET http://textadept.googlecode.com/files/textadept_$TEXTADEPT_VERSION.tgz
-displayandexec "Installation de TextAdept v$TEXTADEPT_VERSION" sh -c "tar zxvf textadept_$TEXTADEPT_VERSION.tgz ; rm -rf /opt/textadept ; mv textadept_$TEXTADEPT_VERSION /opt/textadept ; rm -f /usr/local/bin/textadept ; ln -s /opt/textadept/textadept /usr/local/bin/textadept"
+displayandexec "Installation de TextAdept v$TEXTADEPT_VERSION" "sh -c \"tar zxvf textadept_$TEXTADEPT_VERSION.tgz ; rm -rf /opt/textadept ; mv textadept_$TEXTADEPT_VERSION /opt/textadept ; rm -f /usr/local/bin/textadept ; ln -s /opt/textadept/textadept /usr/local/bin/textadept\""
 
 # Custom .bashrc
 cat >> $HOME_PATH/.bash_aliases << EOF
