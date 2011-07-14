@@ -7,7 +7,7 @@
 # Syntaxe: # su - -c "./debian6postinstall.sh"
 # Syntaxe: or # sudo ./debian6postinstall.sh
 
-VERSION="1.49"
+VERSION="1.50"
 
 #=============================================================================
 # Liste des applications installés par le script
@@ -108,6 +108,7 @@ displayandexec() {
   local message=$1
   echo -n "[En cours] $message"
   shift
+  echo ">>> $*" >> $LOG_FILE 2>&1
   $* >> $LOG_FILE 2>&1
   local ret=$?
   if [ $ret -ne 0 ]; then
