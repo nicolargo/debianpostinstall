@@ -1,12 +1,12 @@
 #!/bin/bash
 # Mon script d'installation automatique de NGinx (depuis les sources)
 #
-# Nicolargo - 01/2011
+# Nicolargo - 07/2011
 # GPL
 #
 # Syntaxe: # su - -c "./nginxautoinstall.sh"
 # Syntaxe: or # sudo ./nginxautoinstall.sh
-VERSION="1.21"
+VERSION="1.22"
 
 ##############################
 # Version de NGinx a installer
@@ -15,6 +15,15 @@ VERSION="1.21"
 NGINX_VERSION="1.0.4"   # The stable version
 
 ##############################
+
+# Variables globales
+#-------------------
+
+HOME_PATH=`grep $USERNAME /etc/passwd | cut -d: -f6`
+APT_GET="apt-get -q -y"
+WGET="wget --no-check-certificate"
+DATE=`date +"%Y%m%d%H%M%S"`
+LOG_FILE="/tmp/nginxautoinstall-$DATE.log"
 
 # Functions
 #-----------------------------------------------------------------------------
@@ -93,17 +102,17 @@ then
 fi
 
 # MaJ des depots
-displayandexec "Update the repositories list" apt-get update
+displayandexec "Update the repositories list" $APT_GET update
 
 # Pre-requis
-displayandexec "Install development tools" apt-get install build-essential libpcre3-dev libssl-dev zlib1g-dev
-displayandexec "Install PHP 5" apt-get install php5-cli php5-common php5-mysql php5-suhosin php5-fpm php5-cgi php-pear php5-xcache php5-gd php5-curl
-displayandexec "Install MemCached" apt-get install libcache-memcached-perl php5-memcache memcached
+displayandexec "Install development tools" $APT_GET install build-essential libpcre3-dev libssl-dev zlib1g-dev
+displayandexec "Install PHP 5" $APT_GET install php5-cli php5-common php5-mysql php5-suhosin php5-fpm php5-cgi php-pear php5-xcache php5-gd php5-curl
+displayandexec "Install MemCached" $APT_GET install libcache-memcached-perl php5-memcache memcached
 
 displaytitle "Install NGinx version $NGINX_VERSION"
 
 # Telechargement des fichiers
-displayandexec "Download NGinx version $NGINX_VERSION" wget http://nginx.org/download/nginx-$NGINX_VERSION.tar.gz
+displayandexec "Download NGinx version $NGINX_VERSION" $WGET http://nginx.org/download/nginx-$NGINX_VERSION.tar.gz
 
 # Extract
 displayandexec "Uncompress NGinx version $NGINX_VERSION" tar zxvf nginx-$NGINX_VERSION.tar.gz
@@ -122,11 +131,11 @@ displayandexec "Install NGinx version $NGINX_VERSION" make install
 displayandexec "Post installation script for NGinx version $NGINX_VERSION" "cd .. ; mkdir /var/lib/nginx ; mkdir /etc/nginx/conf.d ; mkdir /etc/nginx/sites-enabled ; mkdir /var/www ; chown -R www-data:www-data /var/www"
 
 # Download the init script
-displayandexec "Install the NGinx init script" "wget --no-check-certificate https://raw.github.com/nicolargo/debianpostinstall/master/nginx ; mv nginx /etc/init.d/ ; chmod 755 /etc/init.d/nginx ; /usr/sbin/update-rc.d -f nginx defaults"
+displayandexec "Install the NGinx init script" "$WGET https://raw.github.com/nicolargo/debianpostinstall/master/nginx ; mv nginx /etc/init.d/ ; chmod 755 /etc/init.d/nginx ; /usr/sbin/update-rc.d -f nginx defaults"
 
 # Download the default configuration file
 # Nginx + default site
-displayandexec "Init the default configuration file for NGinx" "wget --no-check-certificate https://raw.github.com/nicolargo/debianpostinstall/master/nginx.conf ; wget --no-check-certificate https://raw.github.com/nicolargo/debianpostinstall/master/default-site ; mv nginx.conf /etc/nginx/ ; mv default-site /etc/nginx/sites-enabled/"
+displayandexec "Init the default configuration file for NGinx" "$WGET https://raw.github.com/nicolargo/debianpostinstall/master/nginx.conf ; $WGET https://raw.github.com/nicolargo/debianpostinstall/master/default-site ; mv nginx.conf /etc/nginx/ ; mv default-site /etc/nginx/sites-enabled/"
 
 displaytitle "Start processes"
 
