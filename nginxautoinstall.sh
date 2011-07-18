@@ -6,7 +6,7 @@
 #
 # Syntaxe: # su - -c "./nginxautoinstall.sh"
 # Syntaxe: or # sudo ./nginxautoinstall.sh
-VERSION="1.23"
+VERSION="1.24"
 
 ##############################
 # Version de NGinx a installer
@@ -19,7 +19,7 @@ NGINX_VERSION="1.0.4"   # The stable version
 # Variables globales
 #-------------------
 
-APT_GET="apt-get -q -y"
+APT_GET="apt-get -q -y --force-yes"
 WGET="wget --no-check-certificate"
 DATE=`date +"%Y%m%d%H%M%S"`
 LOG_FILE="/tmp/nginxautoinstall-$DATE.log"

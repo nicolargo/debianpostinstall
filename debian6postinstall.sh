@@ -7,7 +7,7 @@
 # Syntaxe: # su - -c "./debian6postinstall.sh"
 # Syntaxe: or # sudo ./debian6postinstall.sh
 
-VERSION="1.53"
+VERSION="1.54"
 
 #=============================================================================
 # Liste des applications installés par le script
@@ -70,7 +70,7 @@ TEXTADEPT_VERSION="3.9"
 #-------------------
 
 HOME_PATH=`grep $USERNAME /etc/passwd | cut -d: -f6`
-APT_GET="apt-get -q -y"
+APT_GET="apt-get -q -y --force-yes"
 WGET="wget --no-check-certificate"
 DATE=`date +"%Y%m%d%H%M%S"`
 LOG_FILE="/tmp/debian6postinstall-$DATE.log"
