@@ -6,16 +6,62 @@
 #
 # Syntaxe: # su - -c "./nginxautoinstall.sh"
 # Syntaxe: or # sudo ./nginxautoinstall.sh
-VERSION="1.2"
+VERSION="1.21"
 
 ##############################
 # Version de NGinx a installer
 
-#NGINX_VERSION="0.8.54"
-NGINX_VERSION="1.0.4"
+#NGINX_VERSION="0.8.54" # The legacy version
+NGINX_VERSION="1.0.4"   # The stable version
 
 ##############################
+
+# Functions
+#-----------------------------------------------------------------------------
+
+displaymessage() {
+  echo "$*"
+}
+
+displaytitle() {
+  displaymessage "------------------------------------------------------------------------------"
+  displaymessage "$*"  
+  displaymessage "------------------------------------------------------------------------------"
+
+}
+
+displayerror() {
+  displaymessage "$*" >&2
+}
+
+# First parameter: ERROR CODE
+# Second parameter: MESSAGE
+displayerrorandexit() {
+  local exitcode=$1
+  shift
+  displayerror "$*"
+  exit $exitcode
+}
+
+# First parameter: MESSAGE
+# Others parameters: COMMAND (! not |)
+displayandexec() {
+  local message=$1
+  echo -n "[En cours] $message"
+  shift
+  echo ">>> $*" >> $LOG_FILE 2>&1
+  sh -c "$*" >> $LOG_FILE 2>&1
+  local ret=$?
+  if [ $ret -ne 0 ]; then
+    echo -e "\r\e[0;31m   [ERROR]\e[0m $message"
+  else
+    echo -e "\r\e[0;32m      [OK]\e[0m $message"
+  fi
+  return $ret
+}
+
 # Debut de l'installation
+#-----------------------------------------------------------------------------
 
 # Test que le script est lance en root
 if [ $EUID -ne 0 ]; then
@@ -23,19 +69,19 @@ if [ $EUID -ne 0 ]; then
   exit 1
 fi
 
+displaytitle "Install prerequisites"
+
 # Récupération GnuPG key pour DotDeb
 grep '^deb\ .*dotdeb' /etc/apt/sources.list > /dev/null
 if [ $? -ne 0 ]
 then
-  wget http://www.dotdeb.org/dotdeb.gpg
-  cat dotdeb.gpg | apt-key add -
-  rm -f dotdeb.gpg
+  displayandexec "Install the DotDeb repository" "wget http://www.dotdeb.org/dotdeb.gpg ; cat dotdeb.gpg | apt-key add - ; rm -f dotdeb.gpg"
 fi
 
 # Ajout DotDeb package (http://www.dotdeb.org/)
 grep '^deb\ .*packages\.dotdeb' /etc/apt/sources.list > /dev/null
 if [ $? -ne 0 ]
-then
+then  
   echo -e "\n## DotDeb Package\ndeb http://packages.dotdeb.org stable all\ndeb-src http://packages.dotdeb.org stable all\n" >> /etc/apt/sources.list
 fi
 
@@ -47,53 +93,46 @@ then
 fi
 
 # MaJ des depots
-aptitude update
+displayandexec "Update the repositories list" apt-get update
 
 # Pre-requis
-aptitude install build-essential libpcre3-dev libssl-dev zlib1g-dev
-aptitude install php5-cli php5-common php5-mysql php5-suhosin php5-fpm php5-cgi php-pear php5-xcache php5-gd php5-curl
-aptitude install libcache-memcached-perl php5-memcache memcached
+displayandexec "Install development tools" apt-get install build-essential libpcre3-dev libssl-dev zlib1g-dev
+displayandexec "Install PHP 5" apt-get install php5-cli php5-common php5-mysql php5-suhosin php5-fpm php5-cgi php-pear php5-xcache php5-gd php5-curl
+displayandexec "Install MemCached" apt-get install libcache-memcached-perl php5-memcache memcached
+
+displaytitle "Install NGinx version $NGINX_VERSION"
 
 # Telechargement des fichiers
-wget http://sysoev.ru/nginx/nginx-$NGINX_VERSION.tar.gz
+displayandexec "Download NGinx version $NGINX_VERSION" wget http://nginx.org/download/nginx-$NGINX_VERSION.tar.gz
 
 # Extract
-tar zxvf nginx-$NGINX_VERSION.tar.gz
+displayandexec "Uncompress NGinx version $NGINX_VERSION" tar zxvf nginx-$NGINX_VERSION.tar.gz
 
 # Configure
 cd nginx-$NGINX_VERSION
-./configure   --conf-path=/etc/nginx/nginx.conf   --error-log-path=/var/log/nginx/error.log   --pid-path=/var/run/nginx.pid   --lock-path=/var/lock/nginx.lock   --http-log-path=/var/log/nginx/access.log   --with-http_dav_module   --http-client-body-temp-path=/var/lib/nginx/body   --with-http_ssl_module   --http-proxy-temp-path=/var/lib/nginx/proxy   --with-http_stub_status_module   --http-fastcgi-temp-path=/var/lib/nginx/fastcgi   --with-debug   --with-http_flv_module
+displayandexec "Configure NGinx version $NGINX_VERSION" ./configure   --conf-path=/etc/nginx/nginx.conf   --error-log-path=/var/log/nginx/error.log   --pid-path=/var/run/nginx.pid   --lock-path=/var/lock/nginx.lock   --http-log-path=/var/log/nginx/access.log   --with-http_dav_module   --http-client-body-temp-path=/var/lib/nginx/body   --with-http_ssl_module   --http-proxy-temp-path=/var/lib/nginx/proxy   --with-http_stub_status_module   --http-fastcgi-temp-path=/var/lib/nginx/fastcgi   --with-debug   --with-http_flv_module
 
 # Compile
-make
+displayandexec "Compile NGinx version $NGINX_VERSION" make
 
 # Install
-make install
+displayandexec "Install NGinx version $NGINX_VERSION" make install
 
 # Post installation
-cd ..
-mkdir /var/lib/nginx
-mkdir /etc/nginx/conf.d
-mkdir /etc/nginx/sites-enabled
-mkdir /var/www
-chown -R www-data:www-data /var/www
+displayandexec "Post installation script for NGinx version $NGINX_VERSION" "cd .. ; mkdir /var/lib/nginx ; mkdir /etc/nginx/conf.d ; mkdir /etc/nginx/sites-enabled ; mkdir /var/www ; chown -R www-data:www-data /var/www"
 
 # Download the init script
-wget http://svn.nicolargo.com/debianpostinstall/trunk/nginx
-mv nginx /etc/init.d/
-chmod 755 /etc/init.d/nginx
-/usr/sbin/update-rc.d -f nginx defaults
+displayandexec "Install the NGinx init script" "wget --no-check-certificate https://raw.github.com/nicolargo/debianpostinstall/master/nginx ; mv nginx /etc/init.d/ ; chmod 755 /etc/init.d/nginx ; /usr/sbin/update-rc.d -f nginx defaults"
 
 # Download the default configuration file
 # Nginx + default site
-wget http://svn.nicolargo.com/debianpostinstall/trunk/nginx.conf
-wget http://svn.nicolargo.com/debianpostinstall/trunk/default-site
-mv nginx.conf /etc/nginx/
-mv default-site /etc/nginx/sites-enabled/
+displayandexec "Init the default configuration file for NGinx" "wget --no-check-certificate https://raw.github.com/nicolargo/debianpostinstall/master/nginx.conf ; wget --no-check-certificate https://raw.github.com/nicolargo/debianpostinstall/master/default-site ; mv nginx.conf /etc/nginx/ ; mv default-site /etc/nginx/sites-enabled/"
+
+displaytitle "Start processes"
 
 # Start PHP5-FPM and NGinx
-/etc/init.d/php5-fpm start
-/etc/init.d/nginx start
+displayandexec "Start PHP 5" /etc/init.d/php5-fpm start
+displayandexec "Start NGinx" /etc/init.d/nginx start
 
 # Summary
 echo ""
