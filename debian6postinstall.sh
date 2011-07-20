@@ -7,7 +7,7 @@
 # Syntaxe: # su - -c "./debian6postinstall.sh"
 # Syntaxe: or # sudo ./debian6postinstall.sh
 
-VERSION="1.54"
+VERSION="1.55"
 
 #=============================================================================
 # Liste des applications installés par le script
@@ -214,8 +214,10 @@ displayandexec "Téléchargement icones Faenza v$FAENZA_VERSION" $WGET http://fa
 displayandexec "Décompression icones Faenza v$FAENZA_VERSION" tar zxvf faenza-icon-theme_$FAENZA_VERSION.tar.gz
 displayandexec "Installation icones Faenza v$FAENZA_VERSION" cp -R Faenza* /usr/share/icons/
 rm -rf faenza-icon-theme_$FAENZA_VERSION.tar.gz Faenza* AUTHORS COPYING ChangeLog README
+displayandexec "Téléchargement du fond d'écran" $WGET -O /usr/share/backgrounds/wallpaper.jpg https://raw.github.com/nicolargo/debianpostinstall/master/wallpaper.jpg
+displayandexec "Installation du fond d'écran" gconftool-2 -t string -s /desktop/gnome/background/picture_filename /usr/share/backgrounds/wallpaper.jpg
 
-# Conky
+# Conkyc
 # Theme LUA 2011 - http://gnome-look.org/content/show.php?content=141411
 displayandexec "Téléchargement théme Conky" $WGET http://gnome-look.org/CONTENT/content-files/141411-Conky-lua%202011%20next%20generation.tar.gz
 displayandexec "Décompression théme Conky" tar zxvf "141411-Conky-lua 2011 next generation.tar.gz"
@@ -225,6 +227,7 @@ rm -rf "141411-Conky-lua 2011 next generation.tar.gz" "Conky-lua 2011 next gener
 chown -fR $USERNAME:$USERNAME $HOME_PATH/.lua
 chown -fR $USERNAME:$USERNAME $HOME_PATH/.conky
 chown -fR $USERNAME:$USERNAME $HOME_PATH/.conkyrc
+displayandexec "Lancement de Conky" "/usr/bin/conky &"
 
 # Connect Spotify to Chromium
 displayandexec "Configuration de Chromium pour ouvrir les lien Spotify" "gconftool-2 -t string -s /desktop/gnome/url-handlers/spotify/command '/usr/bin/spotify -uri %s' ; gconftool-2 -t bool -s /desktop/gnome/url-handlers/spotify/needs_terminal false ; gconftool-2 -t bool -s /desktop/gnome/url-handlers/spotify/enabled true"
@@ -248,7 +251,7 @@ echo "##########################################################################
 echo ""
 echo "                            Fin du script (version $VERSION)"
 echo ""
-echo " 1) Automatiser lancement > sh -c \"sleep 20; /usr/bin/conky\" <";
+echo " 1) Automatiser lancement > sh -c \"sleep 30; /usr/bin/conky\" <";
 echo "    dans Système > Préférences > Application au démarrage"
 echo " 2) Redémarrer la machine"
 echo " 3) Selectionner le thème GTL: Système > Préférence > Apparence"
