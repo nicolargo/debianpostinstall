@@ -80,21 +80,21 @@ fi
 displaytitle "Install prerequisites"
 
 # Récupération GnuPG key pour DotDeb
-grep '^deb\ .*dotdeb' /etc/apt/sources.list > /dev/null
+grep -rq '^deb\ .*dotdeb' /etc/apt/sources.list.d/*.list /etc/apt/sources.list
 if [ $? -ne 0 ]
 then
   displayandexec "Install the DotDeb repository" "wget http://www.dotdeb.org/dotdeb.gpg ; cat dotdeb.gpg | apt-key add - ; rm -f dotdeb.gpg"
 fi
 
 # Ajout DotDeb package (http://www.dotdeb.org/)
-grep '^deb\ .*packages\.dotdeb' /etc/apt/sources.list > /dev/null
+grep -rq '^deb\ .*packages\.dotdeb' /etc/apt/sources.list.d/*.list /etc/apt/sources.list
 if [ $? -ne 0 ]
 then  
   echo -e "\n## DotDeb Package\ndeb http://packages.dotdeb.org stable all\ndeb-src http://packages.dotdeb.org stable all\n" >> /etc/apt/sources.list
 fi
 
 # Ajout DotDeb PHP 5.3 (http://www.dotdeb.org/)
-grep '^deb\ .*php53\.dotdeb' /etc/apt/sources.list > /dev/null
+grep -rq '^deb\ .*php53\.dotdeb' /etc/apt/sources.list.d/*.list /etc/apt/sources.list
 if [ $? -ne 0 ]
 then
   echo -e "\n## DotDeb PHP 5.3\ndeb http://php53.dotdeb.org stable all\ndeb-src http://php53.dotdeb.org stable all\n" >> /etc/apt/sources.list
