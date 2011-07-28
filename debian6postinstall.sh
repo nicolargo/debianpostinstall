@@ -7,7 +7,7 @@
 # Syntaxe: # su - -c "./debian6postinstall.sh"
 # Syntaxe: or # sudo ./debian6postinstall.sh
 
-VERSION="1.56"
+VERSION="1.57"
 
 #=============================================================================
 # Liste des applications installés par le script
@@ -36,7 +36,7 @@ LISTE=$LISTE" "`apt-cache search gstreamer | awk '{ print $1 }' | grep ^gstreame
 LISTE=$LISTE" terminator"
 
 # Chromium Web Browser
-LISTE=$LISTE" chromium-browser chromium-browser-l10n flashplugin-nonfree sun-java6-jre"
+LISTE=$LISTE" chromium-browser chromium-browser-l10n flashplugin-nonfree"
 
 # Hotot
 LISTE=$LISTE" hotot"
