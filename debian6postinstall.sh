@@ -7,7 +7,7 @@
 # Syntaxe: # su - -c "./debian6postinstall.sh"
 # Syntaxe: or # sudo ./debian6postinstall.sh
 
-VERSION="1.59"
+VERSION="1.60"
 
 #=============================================================================
 # Liste des applications installés par le script
@@ -215,7 +215,7 @@ displayandexec "Décompression icones Faenza v$FAENZA_VERSION" tar zxvf faenza-i
 displayandexec "Installation icones Faenza v$FAENZA_VERSION" "cp -R Faenza* /usr/share/icons/"
 rm -rf faenza-icon-theme_$FAENZA_VERSION.tar.gz Faenza* AUTHORS COPYING ChangeLog README
 displayandexec "Téléchargement du fond d'écran" $WGET -O /usr/share/backgrounds/wallpaper.jpg https://raw.github.com/nicolargo/debianpostinstall/master/wallpaper.jpg
-displayandexec "Installation du fond d'écran" gconftool-2 -t string -s /desktop/gnome/background/picture_filename /usr/share/backgrounds/wallpaper.jpg
+displayandexec "Installation du fond d'écran" "su nicolargo -c 'gconftool-2 -t string -s /desktop/gnome/background/picture_filename /usr/share/backgrounds/wallpaper.jpg'"
 
 # Conkyc
 # Theme LUA 2011 - http://gnome-look.org/content/show.php?content=141411
