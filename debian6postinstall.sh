@@ -7,7 +7,7 @@
 # Syntaxe: # su - -c "./debian6postinstall.sh"
 # Syntaxe: or # sudo ./debian6postinstall.sh
 
-VERSION="1.57"
+VERSION="1.58"
 
 #=============================================================================
 # Liste des applications installés par le script
@@ -220,10 +220,10 @@ displayandexec "Installation du fond d'écran" gconftool-2 -t string -s /desktop
 # Conkyc
 # Theme LUA 2011 - http://gnome-look.org/content/show.php?content=141411
 displayandexec "Téléchargement théme Conky" $WGET http://gnome-look.org/CONTENT/content-files/141411-Conky-lua%202011%20next%20generation.tar.gz
-displayandexec "Décompression théme Conky" tar zxvf "141411-Conky-lua 2011 next generation.tar.gz"
+displayandexec "Décompression théme Conky" tar zxvf "141411-Conky-lua\ 2011\ next\ generation.tar.gz"
 displayandexec "Création des répertoires Conky" "mkdir -p $HOME_PATH/.lua ; mkdir -p $HOME_PATH/.lua/scripts ; mkdir -p $HOME_PATH/.conky"
-displayandexec "Installation théme Conky" "cp 'Conky-lua 2011 next generation/Debian/logo.png' $HOME_PATH/.conky ; cp 'Conky-lua 2011 next generation/Debian/clock_rings.lua' $HOME_PATH/.lua/scripts ; cp 'Conky-lua 2011 next generation/Debian/conkyrc' $HOME_PATH/.conkyrc"
-rm -rf "141411-Conky-lua 2011 next generation.tar.gz" "Conky-lua 2011 next generation"
+displayandexec "Installation théme Conky" "cp 'Conky-lua\ 2011\ next\ generation/Debian/logo.png' $HOME_PATH/.conky ; cp 'Conky-lua\ 2011\ next\ generation/Debian/clock_rings.lua' $HOME_PATH/.lua/scripts ; cp 'Conky-lua 2011\ next\ generation/Debian/conkyrc' $HOME_PATH/.conkyrc"
+rm -rf "141411-Conky-lua 2011 next generation.tar.gz" "Conky-lua\ 2011\ next\ generation"
 chown -fR $USERNAME:$USERNAME $HOME_PATH/.lua
 chown -fR $USERNAME:$USERNAME $HOME_PATH/.conky
 chown -fR $USERNAME:$USERNAME $HOME_PATH/.conkyrc
