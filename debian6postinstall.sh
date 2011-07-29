@@ -7,7 +7,7 @@
 # Syntaxe: # su - -c "./debian6postinstall.sh"
 # Syntaxe: or # sudo ./debian6postinstall.sh
 
-VERSION="1.58"
+VERSION="1.59"
 
 #=============================================================================
 # Liste des applications installés par le script
@@ -208,11 +208,11 @@ displayandexec "Compilation/Installation Equinox Engine v$EQUINOX_ENGINE_VERSION
 rm -rf 121881-equinox-$EQUINOX_ENGINE_VERSION.tar.gz equinox-$EQUINOX_ENGINE_VERSION
 displayandexec "Téléchargement Equinox Theme v$EQUINOX_THEME_VERSION" $WGET http://gnome-look.org/CONTENT/content-files/140449-equinox-themes-$EQUINOX_THEME_VERSION.tar.gz
 displayandexec "Décompression Equinox Theme v$EQUINOX_THEME_VERSION" tar zxvf 140449-equinox-themes-$EQUINOX_THEME_VERSION.tar.gz
-displayandexec "Installation Equinox Theme v$EQUINOX_THEME_VERSION" cp -R Equinox* /usr/share/themes/
+displayandexec "Installation Equinox Theme v$EQUINOX_THEME_VERSION" "cp -R Equinox* /usr/share/themes/"
 rm -rf 140449-equinox-themes-$EQUINOX_THEME_VERSION.tar.gz
 displayandexec "Téléchargement icones Faenza v$FAENZA_VERSION" $WGET http://faenza-icon-theme.googlecode.com/files/faenza-icon-theme_$FAENZA_VERSION.tar.gz
 displayandexec "Décompression icones Faenza v$FAENZA_VERSION" tar zxvf faenza-icon-theme_$FAENZA_VERSION.tar.gz
-displayandexec "Installation icones Faenza v$FAENZA_VERSION" cp -R Faenza* /usr/share/icons/
+displayandexec "Installation icones Faenza v$FAENZA_VERSION" "cp -R Faenza* /usr/share/icons/"
 rm -rf faenza-icon-theme_$FAENZA_VERSION.tar.gz Faenza* AUTHORS COPYING ChangeLog README
 displayandexec "Téléchargement du fond d'écran" $WGET -O /usr/share/backgrounds/wallpaper.jpg https://raw.github.com/nicolargo/debianpostinstall/master/wallpaper.jpg
 displayandexec "Installation du fond d'écran" gconftool-2 -t string -s /desktop/gnome/background/picture_filename /usr/share/backgrounds/wallpaper.jpg
@@ -222,7 +222,7 @@ displayandexec "Installation du fond d'écran" gconftool-2 -t string -s /desktop
 displayandexec "Téléchargement théme Conky" $WGET http://gnome-look.org/CONTENT/content-files/141411-Conky-lua%202011%20next%20generation.tar.gz
 displayandexec "Décompression théme Conky" tar zxvf "141411-Conky-lua\ 2011\ next\ generation.tar.gz"
 displayandexec "Création des répertoires Conky" "mkdir -p $HOME_PATH/.lua ; mkdir -p $HOME_PATH/.lua/scripts ; mkdir -p $HOME_PATH/.conky"
-displayandexec "Installation théme Conky" "cp 'Conky-lua\ 2011\ next\ generation/Debian/logo.png' $HOME_PATH/.conky ; cp 'Conky-lua\ 2011\ next\ generation/Debian/clock_rings.lua' $HOME_PATH/.lua/scripts ; cp 'Conky-lua 2011\ next\ generation/Debian/conkyrc' $HOME_PATH/.conkyrc"
+displayandexec "Installation théme Conky" "cp 'Conky-lua 2011 next generation/Debian/logo.png' $HOME_PATH/.conky ; cp 'Conky-lua 2011 next generation/Debian/clock_rings.lua' $HOME_PATH/.lua/scripts ; cp 'Conky-lua 2011 next generation/Debian/conkyrc' $HOME_PATH/.conkyrc"
 rm -rf "141411-Conky-lua 2011 next generation.tar.gz" "Conky-lua\ 2011\ next\ generation"
 chown -fR $USERNAME:$USERNAME $HOME_PATH/.lua
 chown -fR $USERNAME:$USERNAME $HOME_PATH/.conky
