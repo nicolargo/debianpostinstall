@@ -15,7 +15,7 @@ A post install script dor Debian Server (6 Squeeze or 5 Leny):
 NGinxAutoInstall.sh
 ===================
 
-Auto install NGinx + PHP-FPM + MemCached on Debian
+Auto install NGinx + PHP-FPM + MemCached on Debian Squeeze or Lenny
 
 More informations here: http://blog.nicolargo.com/2011/01/installation-automatique-de-nginx-php-fpm-memcached-sous-debian.html
 

@@ -1,18 +1,18 @@
 #!/bin/bash
 # Mon script d'installation automatique de NGinx (depuis les sources)
 #
-# Nicolargo - 07/2011
+# Nicolargo - 08/2011
 # GPL
 #
 # Syntaxe: # su - -c "./nginxautoinstall.sh"
 # Syntaxe: or # sudo ./nginxautoinstall.sh
-VERSION="1.24"
+VERSION="1.25"
 
 ##############################
 # Version de NGinx a installer
 
 #NGINX_VERSION="0.8.54" # The legacy version
-NGINX_VERSION="1.0.4"   # The stable version
+NGINX_VERSION="1.0.5"   # The stable version
 
 ##############################
 
@@ -86,18 +86,34 @@ then
   displayandexec "Install the DotDeb repository" "wget http://www.dotdeb.org/dotdeb.gpg ; cat dotdeb.gpg | apt-key add - ; rm -f dotdeb.gpg"
 fi
 
-# Ajout DotDeb package (http://www.dotdeb.org/)
-grep -rq '^deb\ .*packages\.dotdeb' /etc/apt/sources.list.d/*.list /etc/apt/sources.list
-if [ $? -ne 0 ]
-then  
-  echo -e "\n## DotDeb Package\ndeb http://packages.dotdeb.org stable all\ndeb-src http://packages.dotdeb.org stable all\n" >> /etc/apt/sources.list
-fi
-
-# Ajout DotDeb PHP 5.3 (http://www.dotdeb.org/)
-grep -rq '^deb\ .*php53\.dotdeb' /etc/apt/sources.list.d/*.list /etc/apt/sources.list
-if [ $? -ne 0 ]
+if [ `lsb_release -sc` == "squeeze" ]
 then
-  echo -e "\n## DotDeb PHP 5.3\ndeb http://php53.dotdeb.org stable all\ndeb-src http://php53.dotdeb.org stable all\n" >> /etc/apt/sources.list
+  # Squeeze
+
+  # Ajout DotDeb package (http://www.dotdeb.org/)
+  grep -rq '^deb\ .*packages\.dotdeb' /etc/apt/sources.list.d/*.list /etc/apt/sources.list
+  if [ $? -ne 0 ]
+  then  
+    echo -e "\n## DotDeb Package\ndeb http://packages.dotdeb.org stable all\ndeb-src http://packages.dotdeb.org stable all\n" >> /etc/apt/sources.list
+  fi
+
+else
+  # Lenny and older
+
+  # Ajout DotDeb package (http://www.dotdeb.org/)
+  grep -rq '^deb\ .*packages\.dotdeb' /etc/apt/sources.list.d/*.list /etc/apt/sources.list
+  if [ $? -ne 0 ]
+  then  
+    echo -e "\n## DotDeb Package\ndeb http://packages.dotdeb.org oldstable all\ndeb-src http://packages.dotdeb.org oldstable all\n" >> /etc/apt/sources.list
+  fi
+
+  # Ajout DotDeb PHP 5.3 (http://www.dotdeb.org/)
+  grep -rq '^deb\ .*php53\.dotdeb' /etc/apt/sources.list.d/*.list /etc/apt/sources.list
+  if [ $? -ne 0 ]
+  then
+    echo -e "\n## DotDeb PHP 5.3\ndeb http://php53.dotdeb.org oldstable all\ndeb-src http://php53.dotdeb.org oldstable all\n" >> /etc/apt/sources.list
+  fi
+
 fi
 
 # MaJ des depots
