@@ -32,7 +32,7 @@ REMOTE_UDP_SERVICES="53" # DNS
 # NETWORK_MGMT=192.168.0.0/24
 # Port used for the SSH service, define this is you have setup a
 # management network but remove it from TCP_SERVICES
-# SSH_PORT="22"
+SSH_PORT="22"
 
 if ! [ -x /sbin/iptables ]; then  
  exit 0
@@ -96,7 +96,6 @@ echo 1 > /proc/sys/net/ipv4/tcp_syncookies
 echo 0 > /proc/sys/net/ipv4/ip_forward 
 echo 1 > /proc/sys/net/ipv4/icmp_echo_ignore_broadcasts 
 echo 1 > /proc/sys/net/ipv4/conf/all/log_martians 
-echo 1 > /proc/sys/net/ipv4/ip_always_defrag
 echo 1 > /proc/sys/net/ipv4/icmp_ignore_bogus_error_responses
 echo 1 > /proc/sys/net/ipv4/conf/all/rp_filter
 echo 0 > /proc/sys/net/ipv4/conf/all/send_redirects
