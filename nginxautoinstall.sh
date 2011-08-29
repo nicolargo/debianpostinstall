@@ -6,7 +6,7 @@
 #
 # Syntaxe: # su - -c "./nginxautoinstall.sh"
 # Syntaxe: or # sudo ./nginxautoinstall.sh
-VERSION="1.25"
+VERSION="1.26"
 
 ##############################
 # Version de NGinx a installer
@@ -134,7 +134,7 @@ displayandexec "Uncompress NGinx version $NGINX_VERSION" tar zxvf nginx-$NGINX_V
 
 # Configure
 cd nginx-$NGINX_VERSION
-displayandexec "Configure NGinx version $NGINX_VERSION" ./configure   --conf-path=/etc/nginx/nginx.conf   --error-log-path=/var/log/nginx/error.log   --pid-path=/var/run/nginx.pid   --lock-path=/var/lock/nginx.lock   --http-log-path=/var/log/nginx/access.log   --with-http_dav_module   --http-client-body-temp-path=/var/lib/nginx/body   --with-http_ssl_module   --http-proxy-temp-path=/var/lib/nginx/proxy   --with-http_stub_status_module   --http-fastcgi-temp-path=/var/lib/nginx/fastcgi   --with-debug   --with-http_flv_module
+displayandexec "Configure NGinx version $NGINX_VERSION" ./configure   --conf-path=/etc/nginx/nginx.conf   --error-log-path=/var/log/nginx/error.log   --pid-path=/var/run/nginx.pid   --lock-path=/var/lock/nginx.lock   --http-log-path=/var/log/nginx/access.log   --with-http_dav_module   --http-client-body-temp-path=/var/lib/nginx/body   --with-http_ssl_module   --http-proxy-temp-path=/var/lib/nginx/proxy   --with-http_stub_status_module   --http-fastcgi-temp-path=/var/lib/nginx/fastcgi   --with-debug   --with-http_flv_module --with-http_realip_module
 
 # Compile
 displayandexec "Compile NGinx version $NGINX_VERSION" make
