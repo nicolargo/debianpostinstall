@@ -6,7 +6,7 @@
 #
 # Syntaxe: # su - -c "./nginxautoinstall.sh"
 # Syntaxe: or # sudo ./nginxautoinstall.sh
-VERSION="1.31"
+VERSION="1.32"
 
 ##############################
 # Version de NGinx a installer
@@ -178,7 +178,7 @@ then
 	displayandexec "Start NGinx" /etc/init.d/nginx start
 else
 	displayandexec "Restart PHP 5" /etc/init.d/php5-fpm restart
-	displayandexec "Restart NGinx" /etc/init.d/nginx restart
+	displayandexec "Restart NGinx" "killall nginx ; /etc/init.d/nginx start"
 fi
 
 # Summary
