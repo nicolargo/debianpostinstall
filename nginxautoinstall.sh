@@ -6,7 +6,7 @@
 #
 # Syntaxe: # su - -c "./nginxautoinstall.sh"
 # Syntaxe: or # sudo ./nginxautoinstall.sh
-VERSION="1.30"
+VERSION="1.31"
 
 ##############################
 # Version de NGinx a installer
@@ -140,6 +140,7 @@ displayandexec "Configure NGinx version $NGINX_VERSION" ./configure   --conf-pat
 displayandexec "Compile NGinx version $NGINX_VERSION" make
 
 # Install or Upgrade
+TAGINSTALL=0
 if [ -x /usr/local/nginx/bin/nginx ]
 then
 	# Upgrade
@@ -149,15 +150,21 @@ then
 else
 	# Install
 	displayandexec "Install NGinx version $NGINX_VERSION" make install
-
-	# Download the default configuration file
-	# Nginx + default site
-	displayandexec "Init the default configuration file for NGinx" "$WGET https://raw.github.com/nicolargo/debianpostinstall/master/nginx.conf ; $WGET https://raw.github.com/nicolargo/debianpostinstall/master/default-site ; mv nginx.conf /etc/nginx/ ; mv default-site /etc/nginx/sites-enabled/"
-
+	TAGINSTALL=1
 fi
 
 # Post installation
-displayandexec "Post installation script for NGinx version $NGINX_VERSION" "cd .. ; mkdir /var/lib/nginx ; mkdir /etc/nginx/conf.d ; mkdir /etc/nginx/sites-enabled ; mkdir /var/www ; chown -R www-data:www-data /var/www"
+if [ $TAGINSTALL == 1 ]
+then
+	displayandexec "Post installation script for NGinx version $NGINX_VERSION" "cd .. ; mkdir /var/lib/nginx ; mkdir /etc/nginx/conf.d ; mkdir /etc/nginx/sites-enabled ; mkdir /var/www ; chown -R www-data:www-data /var/www"
+fi
+
+# Download the default configuration file
+# Nginx + default site
+if [ $TAGINSTALL == 1 ]
+then
+	displayandexec "Init the default configuration file for NGinx" "$WGET https://raw.github.com/nicolargo debianpostinstall/master/nginx.conf ; $WGET https://raw.github.com/nicolargo/debianpostinstall/master/default-site ; mv nginx.conf /etc/nginx/ ; mv default-site /etc/nginx/sites-enabled/"
+fi
 
 # Download the init script
 displayandexec "Install the NGinx init script" "$WGET https://raw.github.com/nicolargo/debianpostinstall/master/nginx ; mv nginx /etc/init.d/ ; chmod 755 /etc/init.d/nginx ; /usr/sbin/update-rc.d -f nginx defaults"
@@ -165,8 +172,14 @@ displayandexec "Install the NGinx init script" "$WGET https://raw.github.com/nic
 displaytitle "Start processes"
 
 # Start PHP5-FPM and NGinx
-displayandexec "Start PHP 5" /etc/init.d/php5-fpm start
-displayandexec "Start NGinx" /etc/init.d/nginx start
+if [ $TAGINSTALL == 1 ]
+then
+	displayandexec "Start PHP 5" /etc/init.d/php5-fpm start
+	displayandexec "Start NGinx" /etc/init.d/nginx start
+else
+	displayandexec "Restart PHP 5" /etc/init.d/php5-fpm restart
+	displayandexec "Restart NGinx" /etc/init.d/nginx restart
+fi
 
 # Summary
 echo ""
