@@ -6,13 +6,13 @@
 #
 # Syntaxe: # su - -c "./nginxautoinstall.sh"
 # Syntaxe: or # sudo ./nginxautoinstall.sh
-VERSION="1.26"
+VERSION="1.30"
 
 ##############################
 # Version de NGinx a installer
 
 #NGINX_VERSION="0.8.54" # The legacy version
-NGINX_VERSION="1.0.5"   # The stable version
+NGINX_VERSION="1.0.6"   # The stable version
 
 ##############################
 
@@ -73,7 +73,7 @@ displayandexec() {
 
 # Test que le script est lance en root
 if [ $EUID -ne 0 ]; then
-  echo "Le script doit être lancé en root: # sudo $0" 1>&2
+  echo "Le script doit être lancé en root (droits administrateur)" 1>&2
   exit 1
 fi
 
@@ -134,23 +134,33 @@ displayandexec "Uncompress NGinx version $NGINX_VERSION" tar zxvf nginx-$NGINX_V
 
 # Configure
 cd nginx-$NGINX_VERSION
-displayandexec "Configure NGinx version $NGINX_VERSION" ./configure   --conf-path=/etc/nginx/nginx.conf   --error-log-path=/var/log/nginx/error.log   --pid-path=/var/run/nginx.pid   --lock-path=/var/lock/nginx.lock   --http-log-path=/var/log/nginx/access.log   --with-http_dav_module   --http-client-body-temp-path=/var/lib/nginx/body   --with-http_ssl_module   --http-proxy-temp-path=/var/lib/nginx/proxy   --with-http_stub_status_module   --http-fastcgi-temp-path=/var/lib/nginx/fastcgi   --with-debug   --with-http_flv_module --with-http_realip_module
+displayandexec "Configure NGinx version $NGINX_VERSION" ./configure   --conf-path=/etc/nginx/nginx.conf   --error-log-path=/var/log/nginx/error.log   --pid-path=/var/run/nginx.pid   --lock-path=/var/lock/nginx.lock   --http-log-path=/var/log/nginx/access.log   --with-http_dav_module   --http-client-body-temp-path=/var/lib/nginx/body   --with-http_ssl_module   --http-proxy-temp-path=/var/lib/nginx/proxy   --with-http_stub_status_module   --http-fastcgi-temp-path=/var/lib/nginx/fastcgi   --with-debug   --with-http_flv_module   --with-http_realip_module
 
 # Compile
 displayandexec "Compile NGinx version $NGINX_VERSION" make
 
-# Install
-displayandexec "Install NGinx version $NGINX_VERSION" make install
+# Install or Upgrade
+if [ -x /usr/local/nginx/bin/nginx ]
+then
+	# Upgrade
+	cp /etc/nginx/nginx.conf /etc/nginx/nginx.conf.$DATE
+	displayandexec "Upgrade NGinx to version $NGINX_VERSION" make install
+
+else
+	# Install
+	displayandexec "Install NGinx version $NGINX_VERSION" make install
+
+	# Download the default configuration file
+	# Nginx + default site
+	displayandexec "Init the default configuration file for NGinx" "$WGET https://raw.github.com/nicolargo/debianpostinstall/master/nginx.conf ; $WGET https://raw.github.com/nicolargo/debianpostinstall/master/default-site ; mv nginx.conf /etc/nginx/ ; mv default-site /etc/nginx/sites-enabled/"
+
+fi
 
 # Post installation
 displayandexec "Post installation script for NGinx version $NGINX_VERSION" "cd .. ; mkdir /var/lib/nginx ; mkdir /etc/nginx/conf.d ; mkdir /etc/nginx/sites-enabled ; mkdir /var/www ; chown -R www-data:www-data /var/www"
 
 # Download the init script
 displayandexec "Install the NGinx init script" "$WGET https://raw.github.com/nicolargo/debianpostinstall/master/nginx ; mv nginx /etc/init.d/ ; chmod 755 /etc/init.d/nginx ; /usr/sbin/update-rc.d -f nginx defaults"
-
-# Download the default configuration file
-# Nginx + default site
-displayandexec "Init the default configuration file for NGinx" "$WGET https://raw.github.com/nicolargo/debianpostinstall/master/nginx.conf ; $WGET https://raw.github.com/nicolargo/debianpostinstall/master/default-site ; mv nginx.conf /etc/nginx/ ; mv default-site /etc/nginx/sites-enabled/"
 
 displaytitle "Start processes"
 
