@@ -141,7 +141,7 @@ displayandexec "Compile NGinx version $NGINX_VERSION" make
 
 # Install or Upgrade
 TAGINSTALL=0
-if [ -x /usr/local/nginx/bin/nginx ]
+if [ -x /usr/local/nginx/sbin/nginx ]
 then
 	# Upgrade
 	cp /etc/nginx/nginx.conf /etc/nginx/nginx.conf.$DATE
