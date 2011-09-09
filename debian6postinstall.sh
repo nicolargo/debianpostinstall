@@ -229,6 +229,18 @@ chown -fR $USERNAME:$USERNAME $HOME_PATH/.conky
 chown -fR $USERNAME:$USERNAME $HOME_PATH/.conkyrc
 displayandexec "Lancement de Conky" "/usr/bin/conky &"
 
+# !!! Intégrer le démarrage automatique de Conky
+# Thx to @openwebtechfr
+#cat << EOF 1>> $HOME_PATH/.config/autostart/conky.desktop
+#[Desktop Entry]
+#Name=conky
+#Exec=/usr/bin/conky -p 10 -c $HOME_PATH/.conky/conkyrc_orange
+#Terminal=false
+#Type=Application
+#StartupNotify=false
+#EOF
+#chown $USERNAME:$USERNAME $HOME_PATH/.config/autostart/conky.desktop
+
 # Connect Spotify to Chromium
 displayandexec "Configuration de Chromium pour ouvrir les lien Spotify" "gconftool-2 -t string -s /desktop/gnome/url-handlers/spotify/command '/usr/bin/spotify -uri %s' ; gconftool-2 -t bool -s /desktop/gnome/url-handlers/spotify/needs_terminal false ; gconftool-2 -t bool -s /desktop/gnome/url-handlers/spotify/enabled true"
 

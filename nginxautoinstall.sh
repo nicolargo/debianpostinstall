@@ -6,7 +6,7 @@
 #
 # Syntaxe: # su - -c "./nginxautoinstall.sh"
 # Syntaxe: or # sudo ./nginxautoinstall.sh
-VERSION="1.32"
+VERSION="1.33"
 
 ##############################
 # Version de NGinx a installer
@@ -163,11 +163,23 @@ fi
 # Nginx + default site
 if [ $TAGINSTALL == 1 ]
 then
-	displayandexec "Init the default configuration file for NGinx" "$WGET https://raw.github.com/nicolargo debianpostinstall/master/nginx.conf ; $WGET https://raw.github.com/nicolargo/debianpostinstall/master/default-site ; mv nginx.conf /etc/nginx/ ; mv default-site /etc/nginx/sites-enabled/"
+	displayandexec "Init the default configuration file for NGinx" "$WGET https://raw.github.com/nicolargo/debianpostinstall/master/nginx.conf ; $WGET https://raw.github.com/nicolargo/debianpostinstall/master/default-site ; mv nginx.conf /etc/nginx/ ; mv default-site /etc/nginx/sites-enabled/"
 fi
 
 # Download the init script
 displayandexec "Install the NGinx init script" "$WGET https://raw.github.com/nicolargo/debianpostinstall/master/nginx ; mv nginx /etc/init.d/ ; chmod 755 /etc/init.d/nginx ; /usr/sbin/update-rc.d -f nginx defaults"
+
+# Log file rotate
+# !!! TODO
+# /etc/logrotate.d$ cat nginx 
+# /var/log/nginx/*_log {
+# 	misssingok
+# 	notifempty
+# 	sharedscripts
+# 	postrotate
+# 		test ! -f /var/run/nginx.pid || kill -USR1 `cat /var/run/nginx.pid`
+# 	endscript
+# }
 
 displaytitle "Start processes"
 
