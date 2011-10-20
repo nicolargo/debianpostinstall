@@ -6,13 +6,13 @@
 #
 # Syntaxe: # su - -c "./nginxautoinstall.sh"
 # Syntaxe: or # sudo ./nginxautoinstall.sh
-VERSION="1.33"
+VERSION="1.34"
 
 ##############################
 # Version de NGinx a installer
 
 #NGINX_VERSION="0.8.54" # The legacy version
-NGINX_VERSION="1.0.6"   # The stable version
+NGINX_VERSION="1.0.8"   # The stable version
 
 ##############################
 
@@ -134,7 +134,7 @@ displayandexec "Uncompress NGinx version $NGINX_VERSION" tar zxvf nginx-$NGINX_V
 
 # Configure
 cd nginx-$NGINX_VERSION
-displayandexec "Configure NGinx version $NGINX_VERSION" ./configure   --conf-path=/etc/nginx/nginx.conf   --error-log-path=/var/log/nginx/error.log   --pid-path=/var/run/nginx.pid   --lock-path=/var/lock/nginx.lock   --http-log-path=/var/log/nginx/access.log   --with-http_dav_module   --http-client-body-temp-path=/var/lib/nginx/body   --with-http_ssl_module   --http-proxy-temp-path=/var/lib/nginx/proxy   --with-http_stub_status_module   --http-fastcgi-temp-path=/var/lib/nginx/fastcgi   --with-debug   --with-http_flv_module   --with-http_realip_module
+displayandexec "Configure NGinx version $NGINX_VERSION" ./configure   --conf-path=/etc/nginx/nginx.conf   --error-log-path=/var/log/nginx/error.log   --pid-path=/var/run/nginx.pid   --lock-path=/var/lock/nginx.lock   --http-log-path=/var/log/nginx/access.log   --with-http_dav_module   --http-client-body-temp-path=/var/lib/nginx/body   --with-http_ssl_module   --http-proxy-temp-path=/var/lib/nginx/proxy   --with-http_stub_status_module   --http-fastcgi-temp-path=/var/lib/nginx/fastcgi   --with-debug   --with-http_flv_module   --with-http_realip_module  --with-http_mp4_module
 
 # Compile
 displayandexec "Compile NGinx version $NGINX_VERSION" make
