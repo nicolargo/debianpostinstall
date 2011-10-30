@@ -1,18 +1,26 @@
 #!/bin/bash
-# Mon script d'installation automatique de NGinx (depuis les sources)
 #
-# Nicolargo - 08/2011
-# GPL
+# My own script to install/upgrade NGinx+PHP5_FPM+MemCached from sources
+# Mon script d'installation/maj de NGinx+PHP5_FPM+MemCached depuis les sources
+#
+# Nicolargo - 11/2011
+# LGPL
 #
 # Syntaxe: # su - -c "./nginxautoinstall.sh"
 # Syntaxe: or # sudo ./nginxautoinstall.sh
-VERSION="1.34"
+#
+VERSION="1.35"
 
 ##############################
 # Version de NGinx a installer
 
 #NGINX_VERSION="0.8.54" # The legacy version
 NGINX_VERSION="1.0.8"   # The stable version
+
+###############################
+# Liste des modules a installer
+
+NGINX_MODULES=" --with-http_dav_module --http-client-body-temp-path=/var/lib/nginx/body --with-http_ssl_module --http-proxy-temp-path=/var/lib/nginx/proxy --with-http_stub_status_module --http-fastcgi-temp-path=/var/lib/nginx/fastcgi --with-debug --with-http_flv_module --with-http_realip_module --with-http_mp4_module"
 
 ##############################
 
@@ -134,7 +142,7 @@ displayandexec "Uncompress NGinx version $NGINX_VERSION" tar zxvf nginx-$NGINX_V
 
 # Configure
 cd nginx-$NGINX_VERSION
-displayandexec "Configure NGinx version $NGINX_VERSION" ./configure   --conf-path=/etc/nginx/nginx.conf   --error-log-path=/var/log/nginx/error.log   --pid-path=/var/run/nginx.pid   --lock-path=/var/lock/nginx.lock   --http-log-path=/var/log/nginx/access.log   --with-http_dav_module   --http-client-body-temp-path=/var/lib/nginx/body   --with-http_ssl_module   --http-proxy-temp-path=/var/lib/nginx/proxy   --with-http_stub_status_module   --http-fastcgi-temp-path=/var/lib/nginx/fastcgi   --with-debug   --with-http_flv_module   --with-http_realip_module  --with-http_mp4_module
+displayandexec "Configure NGinx version $NGINX_VERSION" ./configure --conf-path=/etc/nginx/nginx.conf --error-log-path=/var/log/nginx/error.log --pid-path=/var/run/nginx.pid --lock-path=/var/lock/nginx.lock --http-log-path=/var/log/nginx/access.log $NGINX_MODULES
 
 # Compile
 displayandexec "Compile NGinx version $NGINX_VERSION" make
@@ -170,16 +178,16 @@ fi
 displayandexec "Install the NGinx init script" "$WGET https://raw.github.com/nicolargo/debianpostinstall/master/nginx ; mv nginx /etc/init.d/ ; chmod 755 /etc/init.d/nginx ; /usr/sbin/update-rc.d -f nginx defaults"
 
 # Log file rotate
-# !!! TODO
-# /etc/logrotate.d$ cat nginx 
-# /var/log/nginx/*_log {
-# 	misssingok
-# 	notifempty
-# 	sharedscripts
-# 	postrotate
-# 		test ! -f /var/run/nginx.pid || kill -USR1 `cat /var/run/nginx.pid`
-# 	endscript
-# }
+cat > /etc/logrotate.d/nginx <<EOF
+/var/log/nginx/*_log {
+	missingok
+	notifempty
+	sharedscripts
+	postrotate
+		test ! -f /var/run/nginx.pid || kill -USR1 `cat /var/run/nginx.pid`
+	endscript
+}
+EOF
 
 displaytitle "Start processes"
 
@@ -195,19 +203,21 @@ fi
 
 # Summary
 echo ""
-echo "--------------------------------------"
-echo "NGinx + PHP5-FPM installation finished"
-echo "--------------------------------------"
+echo "------------------------------------------------------------------------------"
+echo "                    NGinx + PHP5-FPM installation finished"
+echo "------------------------------------------------------------------------------"
 echo "NGinx configuration folder:       /etc/nginx"
 echo "NGinx default site configuration: /etc/nginx/sites-enabled/default-site"
 echo "NGinx default HTML root:          /var/www"
 echo ""
-echo "If you use IpTables add the following rules:"
+echo "Installation script  log file:	$LOG_FILE"
+echo ""
+echo "Notes: If you use IpTables add the following rules"
 echo "iptables -A INPUT -i lo -s localhost -d localhost -j ACCEPT"
 echo "iptables -A OUTPUT -o lo -s localhost -d localhost -j ACCEPT"
 echo "iptables -A OUTPUT -m state --state RELATED,ESTABLISHED -j ACCEPT"
 echo "iptables -A INPUT  -p tcp --dport http -j ACCEPT"
-echo "--------------------------------------"
+echo "------------------------------------------------------------------------------"
 echo ""
 
 # Fin du script
