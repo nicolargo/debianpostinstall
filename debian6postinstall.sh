@@ -62,7 +62,7 @@ LISTE=$LISTE" openvpn resolvconf network-manager-openvpn-gnome"
 
 # Dev
 LISTE=$LISTE" subversion git vim anjuta python-rope geany"
-TEXTADEPT_VERSION="3.9"
+TEXTADEPT_VERSION="4.1"
 
 #=============================================================================
 
