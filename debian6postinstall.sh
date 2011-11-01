@@ -7,7 +7,7 @@
 # Syntaxe: # su - -c "./debian6postinstall.sh"
 # Syntaxe: or # sudo ./debian6postinstall.sh
 
-VERSION="1.62"
+VERSION="1.63"
 
 #=============================================================================
 # Liste des applications installés par le script
@@ -61,7 +61,7 @@ LISTE=$LISTE" shutter libgoo-canvas-perl"
 LISTE=$LISTE" openvpn resolvconf network-manager-openvpn-gnome"
 
 # Dev
-LISTE=$LISTE" subversion git vim anjuta python-rope"
+LISTE=$LISTE" subversion git vim anjuta python-rope geany"
 TEXTADEPT_VERSION="3.9"
 
 #=============================================================================
