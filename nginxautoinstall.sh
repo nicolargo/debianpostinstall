@@ -9,7 +9,7 @@
 # Syntaxe: # su - -c "./nginxautoinstall.sh"
 # Syntaxe: or # sudo ./nginxautoinstall.sh
 #
-VERSION="1.37"
+VERSION="1.39"
 
 ##############################
 # Version de NGinx a installer
