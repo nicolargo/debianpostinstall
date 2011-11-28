@@ -9,7 +9,7 @@
 # Syntaxe: # su - -c "./nginxautoinstall.sh"
 # Syntaxe: or # sudo ./nginxautoinstall.sh
 #
-VERSION="1.36"
+VERSION="1.37"
 
 ##############################
 # Version de NGinx a installer
@@ -184,7 +184,7 @@ cat > /etc/logrotate.d/nginx <<EOF
 	notifempty
 	sharedscripts
 	postrotate
-		test ! -f /var/run/nginx.pid || kill -USR1 `cat /var/run/nginx.pid`
+		/bin/kill -USR1 \`cat /var/run/nginx.pid 2>/dev/null\` 2>/dev/null || true
 	endscript
 }
 EOF
