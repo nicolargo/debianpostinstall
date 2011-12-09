@@ -1,0 +1,48 @@
+#!/bin/sh
+
+### BEGIN INIT INFO
+# Provides:		dropboxd
+# Required-Start:	$remote_fs $syslog
+# Required-Stop:	$remote_fs $syslog
+# Default-Start:	2 3 4 5
+# Default-Stop:		
+# Short-Description:	Dropbox server
+### END INIT INFO
+
+set -e
+
+USERNAME=nicolargo
+
+test -x /home/$USERNAME/.dropbox-dist/dropboxd || exit 0
+
+start() {
+	echo "Starting dropbox..."
+	start-stop-daemon -b -o -c $USERNAME -S -x /home/$USERNAME/.dropbox-dist/dropboxd
+}
+
+stop() {
+	echo "Stopping dropbox..."
+	start-stop-daemon -o -c $USERNAME -K -x /home/$USERNAME/.dropbox-dist/dropboxd
+}
+
+case "$1" in
+	start)
+		start
+		;;
+	stop)
+		stop
+		;;
+	reload|force-reload)
+		stop
+		start
+		;;
+	restart)
+		stop
+		start
+		;;
+	*)
+		echo "Usage: /etc/init.d/dropbox {start|stop|reload|force-reload|restart}"
+		exit 1
+esac
+
+exit 0
