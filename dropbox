@@ -11,18 +11,19 @@
 
 set -e
 
-USERNAME=nicolargo
+DROPBOX_LOGIN=nicolargo
+SYSTEM_LOGIN=nicolargo
 
 test -x /home/$USERNAME/.dropbox-dist/dropboxd || exit 0
 
 start() {
 	echo "Starting dropbox..."
-	start-stop-daemon -b -o -c $USERNAME -S -x /home/$USERNAME/.dropbox-dist/dropboxd
+	start-stop-daemon -b -o -c $DROPBOX_LOGIN -S -x /home/$SYSTEM_LOGIN/.dropbox-dist/dropboxd
 }
 
 stop() {
 	echo "Stopping dropbox..."
-	start-stop-daemon -o -c $USERNAME -K -x /home/$USERNAME/.dropbox-dist/dropboxd
+	start-stop-daemon -o -c $DROPBOX_LOGIN -K -x /home/$SYSTEM_LOGIN/.dropbox-dist/dropboxd
 }
 
 case "$1" in
