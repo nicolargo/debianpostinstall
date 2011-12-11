@@ -1,12 +1,12 @@
 #!/bin/bash
 # Mon script de post installation serveur Debian 6.0 aka Squeeze
 #
-# Nicolargo - 06/2011
+# Nicolargo - 12/2011
 # GPL
 #
 # Syntaxe: # su - -c "./squeezeserverpostinstall.sh"
 # Syntaxe: or # sudo ./squeezeserverpostinstall.sh
-VERSION="1.3"
+VERSION="1.31"
 
 #=============================================================================
 # Liste des applications à installer: A adapter a vos besoins
@@ -57,5 +57,7 @@ echo "  > http://www.debian.org/doc/manuals/securing-debian-howto/ch-sec-service
 echo "  > https://raw.github.com/nicolargo/debianpostinstall/master/firewall.sh"
 echo "- Securisé le daemon SSH"
 echo "  > http://www.debian-administration.org/articles/455"
+echo "- Permettre l'envoi de mail"
+echo "  > http://blog.nicolargo.com/2011/12/debian-et-les-mails-depuis-la-ligne-de-commande.html"
 
 # Fin du script
