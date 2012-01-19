@@ -7,7 +7,7 @@
 # Syntaxe: # su - -c "./debian6postinstall.sh"
 # Syntaxe: or # sudo ./debian6postinstall.sh
 
-VERSION="1.63"
+VERSION="1.64"
 
 #=============================================================================
 # Liste des applications installés par le script
@@ -45,7 +45,7 @@ LISTE=$LISTE" hotot"
 LISTE=$LISTE" filezilla"
 
 # Spotify
-LISTE=$LISTE" spotify-client-qt spotify-client-gnome-support"
+LISTE=$LISTE" spotify-client-qt"
 
 # Dropbox (pre-requis)
 LISTE=$LISTE" libnautilus-extension-dev libnotify-dev python-docutils"
