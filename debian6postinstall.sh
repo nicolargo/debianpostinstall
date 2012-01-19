@@ -71,7 +71,7 @@ TEXTADEPT_VERSION="4.1"
 
 HOME_PATH=`grep $USERNAME /etc/passwd | cut -d: -f6`
 APT_GET="apt-get -q -y --force-yes"
-WGET="wget --no-check-certificate"
+WGET="wget -m --no-check-certificate"
 DATE=`date +"%Y%m%d%H%M%S"`
 LOG_FILE="/tmp/debian6postinstall-$DATE.log"
 
