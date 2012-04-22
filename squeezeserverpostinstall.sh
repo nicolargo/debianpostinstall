@@ -12,7 +12,7 @@ VERSION="1.31"
 # Liste des applications à installer: A adapter a vos besoins
 # Voir plus bas les applications necessitant un depot specifique
 # Securite
-LISTE="cron-apt fail2ban"
+LISTE="cron-apt fail2ban lsb-release"
 #=============================================================================
 
 # Test que le script est lance en root
