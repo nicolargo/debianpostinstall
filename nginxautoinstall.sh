@@ -16,7 +16,7 @@ VERSION="1.44"
 
 #NGINX_VERSION="0.8.55" # The legacy version
 #NGINX_VERSION="1.0.14" # The stable version
-NGINX_VERSION="1.1.17"   # The development version
+NGINX_VERSION="1.1.19"   # The development version
 
 ###############################
 # Liste des modules a installer
@@ -82,13 +82,13 @@ displayandexec() {
 
 # Test que le script est lance en root
 if [ $EUID -ne 0 ]; then
-  echo "Le script doit être lancé en root (droits administrateur)" 1>&2
+  echo "Le script doit √™tre lanc√© en root (droits administrateur)" 1>&2
   exit 1
 fi
 
 displaytitle "Install prerequisites"
 
-# Récupération GnuPG key pour DotDeb
+# R√©cup√©ration GnuPG key pour DotDeb
 grep -rq '^deb\ .*dotdeb' /etc/apt/sources.list.d/*.list /etc/apt/sources.list
 if [ $? -ne 0 ]
 then
@@ -103,7 +103,7 @@ then
   grep -rq '^deb\ .*packages\.dotdeb' /etc/apt/sources.list.d/*.list /etc/apt/sources.list
   if [ $? -ne 0 ]
   then  
-    echo -e "\n## DotDeb Package\ndeb http://packages.dotdeb.org stable all\ndeb-src http://packages.dotdeb.org stable all\n" >> /etc/apt/sources.list
+    echo -e "\n## DotDeb Package\ndeb http://packages.dotdeb.org squeeze all\ndeb-src http://packages.dotdeb.org squeeze all\n" >> /etc/apt/sources.list
   fi
 
 else
