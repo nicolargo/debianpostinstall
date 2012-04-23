@@ -14,9 +14,7 @@ VERSION="1.45"
 ##############################
 # Version de NGinx a installer
 
-#NGINX_VERSION="0.8.55" # The legacy version
-#NGINX_VERSION="1.0.15" # The stable version
-NGINX_VERSION="1.2.0"   # The development version
+NGINX_VERSION="1.2.0"   # The stable version
 
 ###############################
 # Liste des modules a installer
