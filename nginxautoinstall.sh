@@ -3,13 +3,13 @@
 # My own script to install/upgrade NGinx+PHP5_FPM+MemCached from sources
 # Mon script d'installation/maj de NGinx+PHP5_FPM+MemCached depuis les sources
 #
-# Nicolargo - 05/2012
+# Nicolargo - 06/2012
 # LGPL
 #
 # Syntaxe: # su - -c "./nginxautoinstall.sh"
 # Syntaxe: or # sudo ./nginxautoinstall.sh
 #
-VERSION="1.46"
+VERSION="1.47"
 
 ##############################
 # Version de NGinx a installer
@@ -93,6 +93,7 @@ then
   displayandexec "Install the DotDeb repository" "wget http://www.dotdeb.org/dotdeb.gpg ; cat dotdeb.gpg | apt-key add - ; rm -f dotdeb.gpg"
 fi
 
+displayandexec "Install lsb_release" "apt-get install lsb-release"
 if [ `lsb_release -sc` == "squeeze" ]
 then
   # Squeeze
