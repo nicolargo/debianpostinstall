@@ -23,7 +23,7 @@ deb http://backports.debian.org/debian-backports squeeze-backports main
 
 #### Debian Multimedia - http://www.debian-multimedia.org/
 ## Run this command: apt-get update && apt-get install debian-multimedia-keyring && apt-get update
-deb http://www.debian-multimedia.org stable main non-free
+deb http://www.deb-multimedia.org stable main non-free
 
 #### Dotdeb - http://www.dotdeb.org
 ## Run this command: wget -q -O - http://www.dotdeb.org/dotdeb.gpg | apt-key add -
