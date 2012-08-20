@@ -1,13 +1,13 @@
 #!/bin/bash
-# Mon script de post installation desktop Debian 6.0
+# Mon script de post installation desktop Debian 6.0.x
 #
-# Nicolargo - 07/2011
+# Nicolargo - 08/2120
 # GPL
 #
 # Syntaxe: # su - -c "./debian6postinstall.sh"
 # Syntaxe: or # sudo ./debian6postinstall.sh
 
-VERSION="1.64"
+VERSION="1.65"
 
 #=============================================================================
 # Liste des applications installés par le script
@@ -24,7 +24,7 @@ LISTE=""
 LISTE=$LISTE" conky-all"
 EQUINOX_ENGINE_VERSION="1.50"
 EQUINOX_THEME_VERSION="1.50"
-FAENZA_VERSION="0.9.2"
+FAENZA_VERSION="1.1"
 
 # Gnome-Do
 LISTE=$LISTE" gnome-do gnome-do-plugins"
@@ -49,7 +49,7 @@ LISTE=$LISTE" spotify-client-qt"
 
 # Dropbox (pre-requis)
 LISTE=$LISTE" libnautilus-extension-dev libnotify-dev python-docutils"
-DROPBOX_VERSION="0.6.7"
+DROPBOX_VERSION="1.4.0"
 
 # Multimedia: Vlc + ffmpeg
 LISTE=$LISTE" vlc ffmpeg"
