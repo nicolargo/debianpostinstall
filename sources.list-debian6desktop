@@ -21,7 +21,7 @@ deb-src http://ftp.fr.debian.org/debian/ squeeze-proposed-updates main contrib n
 #### Debian Backports - http://backports.debian.org/
 deb http://backports.debian.org/debian-backports squeeze-backports main 
 
-#### Debian Multimedia - http://www.debian-multimedia.org/
+#### Debian Multimedia - http://www.deb-multimedia.org/
 ## Run this command: apt-get update && apt-get install debian-multimedia-keyring && apt-get update
 deb http://www.deb-multimedia.org stable main non-free
 

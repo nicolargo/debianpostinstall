@@ -7,7 +7,7 @@
 # Syntaxe: # su - -c "./debian6postinstall.sh"
 # Syntaxe: or # sudo ./debian6postinstall.sh
 
-VERSION="1.65"
+VERSION="1.66"
 
 #=============================================================================
 # Liste des applications installés par le script
@@ -162,7 +162,7 @@ displayandexec "Installation clés du dépôt Spotify" "apt-key adv --keyserver 
 # Chromium (Ubuntu PPA)
 displayandexec "Installation clés du dépôt Chromium" "apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 4E5E17B5"
 # Debian multimedia
-displayandexec "Installation clés du dépôt Debian Multimedia" "$APT_GET update && $APT_GET install debian-multimedia-keyring"
+displayandexec "Installation clés du dépôt Debian Multimedia" "$APT_GET update && $APT_GET install deb-multimedia-keyring"
 
 # Mise a jour des depots
 #-----------------------
