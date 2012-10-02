@@ -3,18 +3,18 @@
 # My own script to install/upgrade NGinx+PHP5_FPM+MemCached from sources
 # Mon script d'installation/maj de NGinx+PHP5_FPM+MemCached depuis les sources
 #
-# Nicolargo - 09/2012
+# Nicolargo - 10/2012
 # LGPL
 #
 # Syntaxe: # su - -c "./nginxautoinstall.sh"
 # Syntaxe: or # sudo ./nginxautoinstall.sh
 #
-VERSION="1.49"
+VERSION="1.50"
 
 ##############################
 # Version de NGinx a installer
 
-NGINX_VERSION="1.3.6"   # The dev version
+NGINX_VERSION="1.3.7"   # The dev version
 #NGINX_VERSION="1.2.2"   # The stable version
 
 ###############################
@@ -196,10 +196,10 @@ displaytitle "Start processes"
 # Start PHP5-FPM and NGinx
 if [ $TAGINSTALL == 1 ]
 then
-	displayandexec "Start PHP 5" /etc/init.d/php5-fpm start
+	displayandexec "Start PHP" /etc/init.d/php5-fpm start
 	displayandexec "Start NGinx" /etc/init.d/nginx start
 else
-	displayandexec "Restart PHP 5" /etc/init.d/php5-fpm restart
+	displayandexec "Restart PHP" /etc/init.d/php5-fpm restart
 	displayandexec "Restart NGinx" "killall nginx ; /etc/init.d/nginx start"
 fi
 
