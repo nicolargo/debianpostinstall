@@ -9,13 +9,13 @@
 # Syntaxe: # su - -c "./nginxautoinstall.sh"
 # Syntaxe: or # sudo ./nginxautoinstall.sh
 #
-VERSION="1.50"
+VERSION="1.51"
 
 ##############################
 # Version de NGinx a installer
 
-NGINX_VERSION="1.3.7"   # The dev version
-#NGINX_VERSION="1.2.2"   # The stable version
+#NGINX_VERSION="1.3.7"   # The dev version
+NGINX_VERSION="1.2.4"   # The stable version
 
 ###############################
 # Liste des modules a installer
@@ -129,8 +129,8 @@ fi
 displayandexec "Update the repositories list" $APT_GET update
 
 # Pre-requis
-displayandexec "Install development tools" $APT_GET install build-essential libpcre3-dev libssl-dev zlib1g-dev
-displayandexec "Install PHP 5" $APT_GET install php5-cli php5-common php5-mysql php5-suhosin php5-fpm php-pear php5-apc php5-gd php5-curl
+displayandexec "Install development tools" $APT_GET install build-essential libpcre3-dev libssl-dev zlib1g-dev php5-dev
+displayandexec "Install PHP-FPM5" $APT_GET install php5-cli php5-common php5-mysql php5-suhosin php5-fpm php-pear php5-apc php5-gd php5-curl
 displayandexec "Install MemCached" $APT_GET install libcache-memcached-perl php5-memcache memcached
 displayandexec "Install Redis" $APT_GET install redis-server php5-redis
 
