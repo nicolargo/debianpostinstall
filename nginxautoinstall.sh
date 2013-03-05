@@ -3,18 +3,18 @@
 # My own script to install/upgrade NGinx+PHP5_FPM+MemCached from sources
 # Mon script d'installation/maj de NGinx+PHP5_FPM+MemCached depuis les sources
 #
-# Nicolargo - 02/2013
+# Nicolargo - 03/2013
 # LGPL
 #
 # Syntaxe: # su - -c "./nginxautoinstall.sh"
 # Syntaxe: or # sudo ./nginxautoinstall.sh
 #
-VERSION="1.54"
+VERSION="1.55"
 
 ##############################
 # Version de NGinx a installer
 
-#NGINX_VERSION="1.3.9"   # The dev version
+#NGINX_VERSION="1.3.14"   # The dev version
 NGINX_VERSION="1.2.7"   # The stable version
 
 ###############################
