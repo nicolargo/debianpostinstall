@@ -12,7 +12,7 @@ VERSION="1.31"
 # Liste des applications à installer: A adapter a vos besoins
 # Voir plus bas les applications necessitant un depot specifique
 # Securite
-LISTE="cron-apt fail2ban lsb-release"
+LISTE="cron-apt fail2ban logwatch lsb-release"
 #=============================================================================
 
 # Test que le script est lance en root
@@ -50,6 +50,8 @@ read MAIL
 sed -i 's/# MAILTO="root"/MAILTO="'$MAIL'"/g' /etc/cron-apt/config
 # fail2ban
 sed -i 's/destemail = root@localhost/destemail = '$MAIL'/g' /etc/fail2ban/jail.conf
+# logwatch
+sed -i 's/logwatch --output mail/logwatch --output mail --mailto '$MAIL' --detail high/g' /etc/cron.daily/00logwatch
 
 echo "Autres action à faire si besoin:"
 echo "- Securisé le serveur avec un Firewall"
