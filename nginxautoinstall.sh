@@ -139,6 +139,12 @@ fi
 # MaJ des depots
 displayandexec "Update the repositories list" $APT_GET update
 
+# Pre-requis
+displayandexec "Install development tools" $APT_GET install build-essential libpcre3-dev libssl-dev zlib1g-dev php5-dev
+displayandexec "Install PHP-FPM5" $APT_GET install php5-cli php5-common php5-mysql php5-fpm php-pear php5-apc php5-gd php5-curl
+displayandexec "Install MemCached" $APT_GET install libcache-memcached-perl php5-memcache memcached
+displayandexec "Install Redis" $APT_GET install redis-server php5-redis
+
 # php5-suhosin no longer available in Wheezy
 if [ `lsb_release -sc` == "wheezy" ]
 then
@@ -146,12 +152,6 @@ then
 else
   displayandexec "Install php5-suhosin" $APT_GET install php5-suhosin
 fi
-
-# Pre-requis
-displayandexec "Install development tools" $APT_GET install build-essential libpcre3-dev libssl-dev zlib1g-dev php5-dev
-displayandexec "Install PHP-FPM5" $APT_GET install php5-cli php5-common php5-mysql php5-fpm php-pear php5-apc php5-gd php5-curl
-displayandexec "Install MemCached" $APT_GET install libcache-memcached-perl php5-memcache memcached
-displayandexec "Install Redis" $APT_GET install redis-server php5-redis
 
 displaytitle "Install NGinx version $NGINX_VERSION"
 
