@@ -3,13 +3,13 @@
 # My own script to install/upgrade NGinx+PHP5_FPM+MemCached from sources
 # Mon script d'installation/maj de NGinx+PHP5_FPM+MemCached depuis les sources
 #
-# Nicolargo - 04/2013
+# Nicolargo - 05/2013
 # LGPL
 #
 # Syntaxe: # su - -c "./nginxautoinstall.sh"
 # Syntaxe: or # sudo ./nginxautoinstall.sh
 #
-VERSION="1.140-128"
+VERSION="1.140-128.02"
 
 ##############################
 # Version de NGinx a installer
@@ -95,9 +95,20 @@ then
 fi
 
 displayandexec "Install lsb_release" "apt-get install lsb-release"
-if [ `lsb_release -sc` == "squeeze" ]
+if [ `lsb_release -sc` == "wheezy" ]
 then
-  # Squeeze
+  # Wheezy (Debian 7)
+
+  # Ajout DotDeb package (http://www.dotdeb.org/)
+  grep -rq '^deb\ .*packages\.dotdeb' /etc/apt/sources.list.d/*.list /etc/apt/sources.list > /dev/null 2>&1
+  if [ $? -ne 0 ]
+  then  
+    echo -e "\n## DotDeb Package\ndeb http://packages.dotdeb.org wheezy all\ndeb-src http://packages.dotdeb.org wheezy all\n" >> /etc/apt/sources.list
+  fi
+
+elif [ `lsb_release -sc` == "squeeze" ]
+then
+  # Squeeze (Debian 6)
 
   # Ajout DotDeb package (http://www.dotdeb.org/)
   grep -rq '^deb\ .*packages\.dotdeb' /etc/apt/sources.list.d/*.list /etc/apt/sources.list > /dev/null 2>&1
@@ -128,9 +139,17 @@ fi
 # MaJ des depots
 displayandexec "Update the repositories list" $APT_GET update
 
+# php5-suhosin no longer available in Wheezy
+if [ `lsb_release -sc` == "wheezy" ]
+then
+  displayandexec "Remove php5-suhosin" dpkg --purge php5-suhosin
+else
+  displayandexec "Install php5-suhosin" $APT_GET install php5-suhosin
+fi
+
 # Pre-requis
 displayandexec "Install development tools" $APT_GET install build-essential libpcre3-dev libssl-dev zlib1g-dev php5-dev
-displayandexec "Install PHP-FPM5" $APT_GET install php5-cli php5-common php5-mysql php5-suhosin php5-fpm php-pear php5-apc php5-gd php5-curl
+displayandexec "Install PHP-FPM5" $APT_GET install php5-cli php5-common php5-mysql php5-fpm php-pear php5-apc php5-gd php5-curl
 displayandexec "Install MemCached" $APT_GET install libcache-memcached-perl php5-memcache memcached
 displayandexec "Install Redis" $APT_GET install redis-server php5-redis
 
