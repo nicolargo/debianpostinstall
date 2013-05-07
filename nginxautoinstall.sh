@@ -81,12 +81,13 @@ NGINX_MODULES="--with-http_dav_module --http-client-body-temp-path=/var/lib/ngin
 if [[ $VERSION_TO_INSTALL == "LEGACY" ]]; then
   # The LEGACY version
   NGINX_VERSION=$NGINX_LEGACY_VERSION
+  NGINX_DEPS=$NGINX_DEPS" php5-apc"
 elif [[ $VERSION_TO_INSTALL == "STABLE" ]]; then
   # The STABLE version
   NGINX_VERSION=$NGINX_STABLE_VERSION
   if [ `lsb_release -sc` == "wheezy" ]
   then
-    NGINX_DEPS=$NGINX_DEPS" openssl"
+    NGINX_DEPS=$NGINX_DEPS" openssl php-apc"
     NGINX_MODULES=$NGINX_OPTIONS" --with-http_ssl_module --with-http_spdy_module"
   fi
 elif [[ $VERSION_TO_INSTALL == "DEV" ]]; then
@@ -94,7 +95,7 @@ elif [[ $VERSION_TO_INSTALL == "DEV" ]]; then
   NGINX_VERSION=$NGINX_DEV_VERSION
   if [ `lsb_release -sc` == "wheezy" ]
   then
-    NGINX_DEPS=$NGINX_DEPS" openssl"
+    NGINX_DEPS=$NGINX_DEPS" openssl php-apc"
     NGINX_MODULES=$NGINX_OPTIONS" --with-http_ssl_module --with-http_spdy_module"
   fi
 else
@@ -182,9 +183,9 @@ displayandexec "Update the repositories list" $APT_GET update
 
 # Pre-requis
 displayandexec "Install development tools" $APT_GET install build-essential libpcre3-dev libssl-dev zlib1g-dev php5-dev
-displayandexec "Install PHP-FPM5" $APT_GET install php5-cli php5-common php5-mysql php5-fpm php-pear php5-apc php5-gd php5-curl
+displayandexec "Install PHP-FPM5" $APT_GET install php5-cli php5-common php5-mysql php5-fpm php-pear php5-gd php5-curl
 displayandexec "Install MemCached" $APT_GET install libcache-memcached-perl php5-memcache memcached
-displayandexec "Install Redis" $APT_GET install redis-server php5-redis
+# displayandexec "Install Redis" $APT_GET install redis-server php5-redis
 if [[ $NGINX_DEPS != "" ]]; then
   displayandexec "Install NGinx dependencies" $APT_GET install $NGINX_DEPS
 fi
@@ -283,10 +284,10 @@ echo "iptables -A OUTPUT -o lo -s localhost -d localhost -j ACCEPT"
 echo "iptables -A OUTPUT -m state --state RELATED,ESTABLISHED -j ACCEPT"
 echo "iptables -A INPUT  -p tcp --dport http -j ACCEPT"
 echo ""
-echo "If you want to manage your PHP session with Redis,"
-echo "just add this two line in the /etc/php5/fpm/php.ini file:"
-echo "  session.save_handler = redis"
-echo "  session.save_path = \"tcp://127.0.0.1:6379?weight=1\""
+# echo "If you want to manage your PHP session with Redis,"
+# echo "just add this two line in the /etc/php5/fpm/php.ini file:"
+# echo "  session.save_handler = redis"
+# echo "  session.save_path = \"tcp://127.0.0.1:6379?weight=1\""
 echo "------------------------------------------------------------------------------"
 echo ""
 
