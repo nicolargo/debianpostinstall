@@ -1,7 +1,6 @@
 #!/bin/bash
 #
 # My own script to install/upgrade NGinx+PHP5_FPM+MemCached from sources
-# Mon script d'installation/maj de NGinx+PHP5_FPM+MemCached depuis les sources
 #
 # Nicolargo - 05/2013
 # LGPL
@@ -9,28 +8,24 @@
 # Syntaxe: # su - -c "./nginxautoinstall.sh"
 # Syntaxe: or # sudo ./nginxautoinstall.sh
 #
-VERSION="1.140-128.02"
+VERSION="1.150-141-128.01"
 
 ##############################
-# Version de NGinx a installer
+# NGinx version to install
+# Use LEGACY, STABLE or DEV
+# - LEGACY or STABLE for a production server
+# - DEV for testing
 
-#NGINX_VERSION="1.4.0"   # The dev version
-NGINX_VERSION="1.2.8"   # The stable version
-
-###############################
-# Liste des modules a installer
-
-NGINX_MODULES=" --with-http_dav_module --http-client-body-temp-path=/var/lib/nginx/body --with-http_ssl_module --http-proxy-temp-path=/var/lib/nginx/proxy --with-http_stub_status_module --http-fastcgi-temp-path=/var/lib/nginx/fastcgi --with-debug --with-http_flv_module --with-http_realip_module --with-http_mp4_module"
+VERSION_TO_INSTALL="LEGACY"
 
 ##############################
 
-# Variables globales
-#-------------------
+# !!!! Do not change the code bellow
 
-APT_GET="apt-get -q -y --force-yes"
-WGET="wget --no-check-certificate"
-DATE=`date +"%Y%m%d%H%M%S"`
-LOG_FILE="/tmp/nginxautoinstall-$DATE.log"
+# Current NGinx version
+NGINX_LEGACY_VERSION="1.2.8"
+NGINX_STABLE_VERSION="1.4.1"
+NGINX_DEV_VERSION="1.5.0"
 
 # Functions
 #-----------------------------------------------------------------------------
@@ -76,13 +71,59 @@ displayandexec() {
   return $ret
 }
 
+########################
+# Configuration de NGinx
+
+NGINX_DEPS=""
+NGINX_OPTIONS="--conf-path=/etc/nginx/nginx.conf --error-log-path=/var/log/nginx/error.log --pid-path=/var/run/nginx.pid --lock-path=/var/lock/nginx.lock --http-log-path=/var/log/nginx/access.log"
+NGINX_MODULES="--with-http_dav_module --http-client-body-temp-path=/var/lib/nginx/body --with-http_ssl_module --http-proxy-temp-path=/var/lib/nginx/proxy --with-http_stub_status_module --http-fastcgi-temp-path=/var/lib/nginx/fastcgi --with-debug --with-http_flv_module --with-http_realip_module --with-http_mp4_module"
+
+if [[ $VERSION_TO_INSTALL == "LEGACY" ]]; then
+  # The LEGACY version
+  NGINX_VERSION=$NGINX_LEGACY_VERSION
+elif [[ $VERSION_TO_INSTALL == "STABLE" ]]; then
+  # The STABLE version
+  NGINX_VERSION=$NGINX_STABLE_VERSION
+  if [ `lsb_release -sc` == "wheezy" ]
+  then
+    NGINX_DEPS=$NGINX_DEPS" openssl"
+    NGINX_OPTIONS=$NGINX_OPTIONS" --with-http_ssl_module --with-http_spdy_module"
+  fi
+elif [[ $VERSION_TO_INSTALL == "DEV" ]]; then
+  # The DEV version
+  NGINX_VERSION=$NGINX_DEV_VERSION
+  if [ `lsb_release -sc` == "wheezy" ]
+  then
+    NGINX_DEPS=$NGINX_DEPS" openssl"
+    NGINX_OPTIONS=$NGINX_OPTIONS" --with-http_ssl_module --with-http_spdy_module"
+  fi
+else
+  displayerrorandexit 1 "Error: VERSION_TO_INSTALL should be set to LEGACY, STABLE or DEV... Exit..."
+fi
+
+displaytitle "Installation of NGinx $NGINX_VERSION ($VERSION_TO_INSTALL)"
+if [[ $NGINX_DEPS != "" ]]; then
+  displaymessage "Packages needed: $NGINX_DEPS"
+fi
+displaymessage "Options: $NGINX_OPTIONS"
+displaymessage "Modules: $NGINX_MODULES"
+
+##############################
+
+# Variables globales
+#-------------------
+
+APT_GET="apt-get -q -y --force-yes"
+WGET="wget --no-check-certificate"
+DATE=`date +"%Y%m%d%H%M%S"`
+LOG_FILE="/tmp/nginxautoinstall-$DATE.log"
+
 # Debut de l'installation
 #-----------------------------------------------------------------------------
 
 # Test que le script est lance en root
 if [ $EUID -ne 0 ]; then
-  echo "Le script doit √™tre lanc√© en root (droits administrateur)" 1>&2
-  exit 1
+  displayerrorandexit 1 "Error: Script should be ran as root..." 1>&2
 fi
 
 displaytitle "Install prerequisites"
@@ -144,6 +185,9 @@ displayandexec "Install development tools" $APT_GET install build-essential libp
 displayandexec "Install PHP-FPM5" $APT_GET install php5-cli php5-common php5-mysql php5-fpm php-pear php5-apc php5-gd php5-curl
 displayandexec "Install MemCached" $APT_GET install libcache-memcached-perl php5-memcache memcached
 displayandexec "Install Redis" $APT_GET install redis-server php5-redis
+if [[ $NGINX_DEPS != "" ]]; then
+  displayandexec "Install NGinx dependencies" $APT_GET install $NGINX_DEPS
+fi
 
 # php5-suhosin no longer available in Wheezy
 if [ `lsb_release -sc` == "wheezy" ]
@@ -163,7 +207,7 @@ displayandexec "Uncompress NGinx version $NGINX_VERSION" tar zxvf nginx-$NGINX_V
 
 # Configure
 cd nginx-$NGINX_VERSION
-displayandexec "Configure NGinx version $NGINX_VERSION" ./configure --conf-path=/etc/nginx/nginx.conf --error-log-path=/var/log/nginx/error.log --pid-path=/var/run/nginx.pid --lock-path=/var/lock/nginx.lock --http-log-path=/var/log/nginx/access.log $NGINX_MODULES
+displayandexec "Configure NGinx version $NGINX_VERSION" ./configure $NGINX_OPTIONS $NGINX_MODULES
 
 # Compile
 displayandexec "Compile NGinx version $NGINX_VERSION" make
