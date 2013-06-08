@@ -1,23 +1,12 @@
 #!/bin/sh
-# Simple example firewall configuration.
 #
-# Caveats:
-# - This configuration applies to all network interfaces
-#   if you want to restrict this to only a given interface use
-#   '-i INTERFACE' in the iptables calls.
-# - Remote access for TCP/UDP services is granted to any host,
-#   you probably will want to restrict this using '--source'.
+# Simple Firewall configuration.
+#
+# Author: Nicolargo
 #
 # chkconfig: 2345 9 91
 # description: Activates/Deactivates the firewall at boot time
 #
-# You can test this script before applying with the following shell
-# snippet, if you do not type anything in 10 seconds the firewall
-# rules will be cleared.
-#---------------------------------------------------------------
-#  while true; do test=""; read  -t 20 -p "OK? " test ; \
-#  [ -z "$test" ] && /etc/init.d/myfirewall clear ; done
-#---------------------------------------------------------------
 ### BEGIN INIT INFO
 # Provides:          firewall.sh
 # Required-Start:    $syslog $network
@@ -46,6 +35,10 @@ SSH_PORT="22"
 if ! [ -x /sbin/iptables ]; then
  exit 0
 fi
+
+##########################
+# Start the Firewall rules
+##########################
 
 fw_start () {
 
@@ -112,6 +105,10 @@ echo 0 > /proc/sys/net/ipv4/conf/all/accept_source_route
 
 }
 
+##########################
+# Stop the Firewall rules
+##########################
+
 fw_stop () {
 /sbin/iptables -F
 /sbin/iptables -t nat -F
@@ -121,6 +118,10 @@ fw_stop () {
 /sbin/iptables -P OUTPUT ACCEPT
 }
 
+##########################
+# Clear the Firewall rules
+##########################
+
 fw_clear () {
 /sbin/iptables -F
 /sbin/iptables -t nat -F
@@ -129,6 +130,10 @@ fw_clear () {
 /sbin/iptables -P FORWARD ACCEPT
 /sbin/iptables -P OUTPUT ACCEPT
 }
+
+##########################
+# Test the Firewall rules
+##########################
 
 fw_save () {
 /sbin/iptables-save > /etc/iptables.backup
@@ -170,7 +175,8 @@ test)
  echo -n "Previous configuration will be restore in 30 seconds"
  ;;
 *)
- echo "Usage: $0 {start|stop|restart|clear}"
+ echo "Usage: $0 {start|stop|restart|clear|test}"
+ echo "Be aware that stop drop all incoming/outgoing traffic !!!"
  exit 1
  ;;
 esac
