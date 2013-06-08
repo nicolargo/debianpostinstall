@@ -5,7 +5,7 @@
 # - This configuration applies to all network interfaces
 #   if you want to restrict this to only a given interface use
 #   '-i INTERFACE' in the iptables calls.
-# - Remote access for TCP/UDP services is granted to any host, 
+# - Remote access for TCP/UDP services is granted to any host,
 #   you probably will want to restrict this using '--source'.
 #
 # chkconfig: 2345 9 91
@@ -43,7 +43,7 @@ REMOTE_UDP_SERVICES="53" # DNS
 # management network but remove it from TCP_SERVICES
 SSH_PORT="22"
 
-if ! [ -x /sbin/iptables ]; then  
+if ! [ -x /sbin/iptables ]; then
  exit 0
 fi
 
@@ -65,7 +65,7 @@ fi
 # Remote management
 if [ -n "$NETWORK_MGMT" ] ; then
  /sbin/iptables -A INPUT -p tcp --src ${NETWORK_MGMT} --dport ${SSH_PORT} -j ACCEPT
-else 
+else
  /sbin/iptables -A INPUT -p tcp --dport ${SSH_PORT}  -j ACCEPT
 fi
 # Remote testing
@@ -75,15 +75,15 @@ fi
 /sbin/iptables -A INPUT -j LOG
 
 # Output:
-/sbin/iptables -A OUTPUT -j ACCEPT -o lo 
+/sbin/iptables -A OUTPUT -j ACCEPT -o lo
 /sbin/iptables -A OUTPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
 # ICMP is permitted:
 /sbin/iptables -A OUTPUT -p icmp -j ACCEPT
 # So are security package updates:
 # Note: You can hardcode the IP address here to prevent DNS spoofing
-# and to setup the rules even if DNS does not work but then you 
+# and to setup the rules even if DNS does not work but then you
 # will not "see" IP changes for this service:
-/sbin/iptables -A OUTPUT -p tcp -d security.debian.org --dport 80 -j ACCEPT 
+/sbin/iptables -A OUTPUT -p tcp -d security.debian.org --dport 80 -j ACCEPT
 # As well as the services we have defined:
 if [ -n "$REMOTE_TCP_SERVICES" ] ; then
 for PORT in $REMOTE_TCP_SERVICES; do
@@ -97,14 +97,14 @@ done
 fi
 # All other connections are registered in syslog
 /sbin/iptables -A OUTPUT -j LOG
-/sbin/iptables -A OUTPUT -j REJECT 
+/sbin/iptables -A OUTPUT -j REJECT
 /sbin/iptables -P OUTPUT DROP
 # Other network protections
 # (some will only work with some kernel versions)
 echo 1 > /proc/sys/net/ipv4/tcp_syncookies
-echo 0 > /proc/sys/net/ipv4/ip_forward 
-echo 1 > /proc/sys/net/ipv4/icmp_echo_ignore_broadcasts 
-echo 1 > /proc/sys/net/ipv4/conf/all/log_martians 
+echo 0 > /proc/sys/net/ipv4/ip_forward
+echo 1 > /proc/sys/net/ipv4/icmp_echo_ignore_broadcasts
+echo 1 > /proc/sys/net/ipv4/conf/all/log_martians
 echo 1 > /proc/sys/net/ipv4/icmp_ignore_bogus_error_responses
 echo 1 > /proc/sys/net/ipv4/conf/all/rp_filter
 echo 0 > /proc/sys/net/ipv4/conf/all/send_redirects
@@ -130,11 +130,27 @@ fw_clear () {
 /sbin/iptables -P OUTPUT ACCEPT
 }
 
+fw_save () {
+/sbin/iptables-save > /etc/iptables.backup
+}
+
+fw_restore () {
+if [ -e /etc/iptables.backup ]; then
+ /sbin/iptables-restore < /etc/iptables.backup
+fi
+}
+
+fw_test () {
+fw_save
+sleep 30 && echo "Restore previous Firewall rules..." && fw_restore &
+fw_stop
+fw_start
+}
 
 case "$1" in
 start|restart)
  echo -n "Starting firewall.."
- fw_stop 
+ fw_stop
  fw_start
  echo "done."
  ;;
@@ -148,10 +164,14 @@ clear)
  fw_clear
  echo "done."
  ;;
+test)
+ echo -n "Test Firewall rules..."
+ fw_test
+ echo -n "Previous configuration will be restore in 30 seconds"
+ ;;
 *)
  echo "Usage: $0 {start|stop|restart|clear}"
  exit 1
  ;;
 esac
 exit 0
-
