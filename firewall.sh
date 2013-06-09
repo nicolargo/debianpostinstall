@@ -131,6 +131,15 @@ fw_clear () {
 /sbin/iptables -P OUTPUT ACCEPT
 }
 
+############################
+# Restart the Firewall rules
+############################
+
+fw_restart () {
+fw_stop
+fw_start
+}
+
 ##########################
 # Test the Firewall rules
 ##########################
@@ -147,32 +156,32 @@ fi
 
 fw_test () {
 fw_save
-sleep 30 && echo "Restore previous Firewall rules..." && fw_restore &
-fw_stop
-fw_start
+fw_restart
+sleep 30
+fw_restore
 }
 
 case "$1" in
 start|restart)
- echo -n "Starting firewall.."
- fw_stop
- fw_start
+ echo -n "Starting firewall..."
+ fw_restart
  echo "done."
  ;;
 stop)
- echo -n "Stopping firewall.."
+ echo -n "Stopping firewall..."
  fw_stop
  echo "done."
  ;;
 clear)
- echo -n "Clearing firewall rules.."
+ echo -n "Clearing firewall rules..."
  fw_clear
  echo "done."
  ;;
 test)
  echo -n "Test Firewall rules..."
- fw_test
  echo -n "Previous configuration will be restore in 30 seconds"
+ fw_test
+ echo -n "Configuration as been restored"
  ;;
 *)
  echo "Usage: $0 {start|stop|restart|clear|test}"
