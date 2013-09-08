@@ -2,13 +2,13 @@
 #
 # My own script to install/upgrade NGinx+PHP5_FPM+MemCached from sources
 #
-# Nicolargo - 05/2013
+# Nicolargo - 09/2013
 # LGPL
 #
 # Syntaxe: # su - -c "./nginxautoinstall.sh"
 # Syntaxe: or # sudo ./nginxautoinstall.sh
 #
-VERSION="1.150-141-128.01"
+VERSION="1.154-142-129.01"
 
 ##############################
 # NGinx version to install
@@ -16,16 +16,16 @@ VERSION="1.150-141-128.01"
 # - LEGACY or STABLE for a production server
 # - DEV for testing
 
-VERSION_TO_INSTALL="LEGACY"
+VERSION_TO_INSTALL="STABLE"
 
 ##############################
 
 # !!!! Do not change the code bellow
 
 # Current NGinx version
-NGINX_LEGACY_VERSION="1.2.8"
-NGINX_STABLE_VERSION="1.4.1"
-NGINX_DEV_VERSION="1.5.0"
+NGINX_LEGACY_VERSION="1.2.9"
+NGINX_STABLE_VERSION="1.4.2"
+NGINX_DEV_VERSION="1.5.4"
 
 # Functions
 #-----------------------------------------------------------------------------
