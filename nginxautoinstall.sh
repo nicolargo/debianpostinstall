@@ -94,7 +94,7 @@ elif [[ $VERSION_TO_INSTALL == "STABLE" ]]; then
   if [ `lsb_release -sc` == "wheezy" ]
   then
     NGINX_DEPS=$NGINX_DEPS" openssl php-apc"
-    NGINX_MODULES=$NGINX_OPTIONS" --with-http_ssl_module --with-http_spdy_module"
+    NGINX_MODULES=$NGINX_MODULES" --with-http_ssl_module --with-http_spdy_module"
   fi
 elif [[ $VERSION_TO_INSTALL == "DEV" ]]; then
   # The DEV version
@@ -102,7 +102,7 @@ elif [[ $VERSION_TO_INSTALL == "DEV" ]]; then
   if [ `lsb_release -sc` == "wheezy" ]
   then
     NGINX_DEPS=$NGINX_DEPS" openssl php-apc"
-    NGINX_MODULES=$NGINX_OPTIONS" --with-http_ssl_module --with-http_spdy_module"
+    NGINX_MODULES=$NGINX_MODULES" --with-http_ssl_module --with-http_spdy_module"
   fi
 else
   displayerrorandexit 1 "Error: VERSION_TO_INSTALL should be set to LEGACY, STABLE or DEV... Exit..."
@@ -110,7 +110,7 @@ fi
 
 if [[ $WITH_NAXSI == "TRUE" ]]; then
     # Add Naxsi path
-    NGINX_MODULES=$NGINX_OPTIONS" --add-module=../naxsi-master/naxsi_src/"
+    NGINX_MODULES=$NGINX_MODULES" --add-module=../naxsi-master/naxsi_src/"
 fi
 
 displaytitle "Installation of NGinx $NGINX_VERSION ($VERSION_TO_INSTALL)"
