@@ -8,7 +8,7 @@
 # Syntaxe: # su - -c "./nginxautoinstall.sh"
 # Syntaxe: or # sudo ./nginxautoinstall.sh
 #
-VERSION="1.157-144-129.01"
+VERSION="1.157-144-129.02"
 
 ##############################
 # NGinx version to install
@@ -17,6 +17,12 @@ VERSION="1.157-144-129.01"
 # - DEV for testing
 
 VERSION_TO_INSTALL="STABLE"
+
+# Install Naxsi, the WAF for NGinx ?
+# - TRUE: yes install Naxsi
+# - FALSE: Do not install Naxsi
+
+WITH_NAXSI="TRUE"
 
 ##############################
 
@@ -102,10 +108,16 @@ else
   displayerrorandexit 1 "Error: VERSION_TO_INSTALL should be set to LEGACY, STABLE or DEV... Exit..."
 fi
 
+if [[ $WITH_NAXSI == "TRUE" ]]; then
+    # Add Naxsi path
+    NGINX_MODULES=$NGINX_OPTIONS" --add-module=../naxsi-master/naxsi_src/"
+fi
+
 displaytitle "Installation of NGinx $NGINX_VERSION ($VERSION_TO_INSTALL)"
 if [[ $NGINX_DEPS != "" ]]; then
   displaymessage "Packages needed: $NGINX_DEPS"
 fi
+
 displaymessage "Options: $NGINX_OPTIONS"
 displaymessage "Modules: $NGINX_MODULES"
 
@@ -116,6 +128,7 @@ displaymessage "Modules: $NGINX_MODULES"
 
 APT_GET="apt-get -q -y --force-yes"
 WGET="wget --no-check-certificate"
+UNZIP="unzip"
 DATE=`date +"%Y%m%d%H%M%S"`
 LOG_FILE="/tmp/nginxautoinstall-$DATE.log"
 
@@ -182,7 +195,7 @@ fi
 displayandexec "Update the repositories list" $APT_GET update
 
 # Pre-requis
-displayandexec "Install development tools" $APT_GET install build-essential libpcre3-dev libssl-dev zlib1g-dev php5-dev
+displayandexec "Install development tools" $APT_GET install build-essential libpcre3-dev libssl-dev zlib1g-dev php5-dev unzip
 displayandexec "Install PHP-FPM5" $APT_GET install php5-cli php5-common php5-mysql php5-fpm php-pear php5-gd php5-curl
 displayandexec "Install MemCached" $APT_GET install libcache-memcached-perl php5-memcache memcached
 # displayandexec "Install Redis" $APT_GET install redis-server php5-redis
@@ -198,12 +211,22 @@ else
   displayandexec "Install php5-suhosin" $APT_GET install php5-suhosin
 fi
 
-displaytitle "Install NGinx version $NGINX_VERSION"
+if [[ $WITH_NAXSI == "TRUE" ]]; then
+    displaytitle "Install NGinx version $NGINX_VERSION with Naxsi"
+else
+    displaytitle "Install NGinx version $NGINX_VERSION"
+fi
 
 # Telechargement des fichiers
+if [[ $WITH_NAXSI == "TRUE" ]]; then
+    displayandexec "Download Naxsi (HEAD version)" $WGET -O naxsi-master.zip  https://github.com/nbs-system/naxsi/archive/master.zip
+fi
 displayandexec "Download NGinx version $NGINX_VERSION" $WGET http://nginx.org/download/nginx-$NGINX_VERSION.tar.gz
 
 # Extract
+if [[ $WITH_NAXSI == "TRUE" ]]; then
+    displayandexec "Uncompress Naxsi (HEAD version)" $UNZIP naxsi-master.zip
+fi
 displayandexec "Uncompress NGinx version $NGINX_VERSION" tar zxvf nginx-$NGINX_VERSION.tar.gz
 
 # Configure
@@ -270,11 +293,18 @@ fi
 # Summary
 echo ""
 echo "------------------------------------------------------------------------------"
-echo "                    NGinx + PHP5-FPM installation finished"
+if [[ $WITH_NAXSI == "TRUE" ]]; then
+    echo "                NGinx + PHP5-FPM + Naxsi installation finished"
+else
+    echo "                    NGinx + PHP5-FPM installation finished"
+fi
 echo "------------------------------------------------------------------------------"
 echo "NGinx configuration folder:       /etc/nginx"
 echo "NGinx default site configuration: /etc/nginx/sites-enabled/default-site"
 echo "NGinx default HTML root:          /var/www"
+if [[ $WITH_NAXSI == "TRUE" ]]; then
+    echo "Read this to configure Naxsi:     https://github.com/nbs-system/naxsi/wiki/basicsetup"
+fi
 echo ""
 echo "Installation script  log file:	$LOG_FILE"
 echo ""
