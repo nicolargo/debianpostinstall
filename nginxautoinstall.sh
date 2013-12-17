@@ -8,7 +8,7 @@
 # Syntaxe: # su - -c "./nginxautoinstall.sh"
 # Syntaxe: or # sudo ./nginxautoinstall.sh
 #
-VERSION="1.157-144-129.02"
+VERSION="1.158-144-129.02"
 
 ##############################
 # NGinx version to install
@@ -31,7 +31,7 @@ WITH_NAXSI="TRUE"
 # Current NGinx version
 NGINX_LEGACY_VERSION="1.2.9"
 NGINX_STABLE_VERSION="1.4.4"
-NGINX_DEV_VERSION="1.5.7"
+NGINX_DEV_VERSION="1.5.8"
 
 # Functions
 #-----------------------------------------------------------------------------
