@@ -2,13 +2,13 @@
 #
 # My own script to install/upgrade NGinx+PHP5_FPM+MemCached from sources
 #
-# Nicolargo - 12/2013
+# Nicolargo - 01/2014
 # LGPL
 #
 # Syntaxe: # su - -c "./nginxautoinstall.sh"
 # Syntaxe: or # sudo ./nginxautoinstall.sh
 #
-VERSION="1.158-144-129.02"
+VERSION="1.158-144-129.03"
 
 ##############################
 # NGinx version to install
@@ -24,6 +24,10 @@ VERSION_TO_INSTALL="STABLE"
 
 WITH_NAXSI="TRUE"
 
+# Install PageSpeed module
+
+WITH_PAGESPEED="TRUE"
+
 ##############################
 
 # !!!! Do not change the code bellow
@@ -32,6 +36,10 @@ WITH_NAXSI="TRUE"
 NGINX_LEGACY_VERSION="1.2.9"
 NGINX_STABLE_VERSION="1.4.4"
 NGINX_DEV_VERSION="1.5.8"
+
+# PageSpeed version
+PAGESPEED_VERSION="1.7.30.3-beta"
+PAGESPEED_PSOL_VERSION="1.7.30.3"
 
 # Functions
 #-----------------------------------------------------------------------------
@@ -109,8 +117,13 @@ else
 fi
 
 if [[ $WITH_NAXSI == "TRUE" ]]; then
-    # Add Naxsi path
+    # Add Naxsi module
     NGINX_MODULES=$NGINX_MODULES" --add-module=../naxsi-master/naxsi_src/"
+fi
+
+if [[ $WITH_PAGESPEED == "TRUE" ]]; then
+    # Add PageSpeed module
+    NGINX_MODULES=$NGINX_MODULES" --add-module=../ngx_pagespeed-release-"$PAGESPEED_VERSION
 fi
 
 displaytitle "Installation of NGinx $NGINX_VERSION ($VERSION_TO_INSTALL)"
@@ -211,21 +224,32 @@ else
   displayandexec "Install php5-suhosin" $APT_GET install php5-suhosin
 fi
 
+MSG=""
 if [[ $WITH_NAXSI == "TRUE" ]]; then
-    displaytitle "Install NGinx version $NGINX_VERSION with Naxsi"
-else
-    displaytitle "Install NGinx version $NGINX_VERSION"
+  MSG=$MSG" + Naxsi"
 fi
+if [[ $WITH_PAGESPEED == "TRUE" ]]; then
+  MSG=$MSG" + PageSpeed"
+fi
+displaytitle "Install NGinx version $NGINX_VERSION"$MSG
 
 # Telechargement des fichiers
 if [[ $WITH_NAXSI == "TRUE" ]]; then
     displayandexec "Download Naxsi (HEAD version)" $WGET -O naxsi-master.zip  https://github.com/nbs-system/naxsi/archive/master.zip
+fi
+if [[ $WITH_PAGESPEED == "TRUE" ]]; then
+    displayandexec "Download PageSpeed" $WGET https://github.com/pagespeed/ngx_pagespeed/archive/release-$PAGESPEED_VERSION.zip
+    displayandexec "Download PageSpeed (PSOL)" $WGET https://dl.google.com/dl/page-speed/psol/$PAGESPEED_PSOL_VERSION.tar.gz
 fi
 displayandexec "Download NGinx version $NGINX_VERSION" $WGET http://nginx.org/download/nginx-$NGINX_VERSION.tar.gz
 
 # Extract
 if [[ $WITH_NAXSI == "TRUE" ]]; then
     displayandexec "Uncompress Naxsi (HEAD version)" $UNZIP naxsi-master.zip
+fi
+if [[ $WITH_PAGESPEED == "TRUE" ]]; then
+    displayandexec "Uncompress PageSpeed" $UNZIP release-$PAGESPEED_VERSION.zip
+    displayandexec "Uncompress PageSpeed (PSOL)" "cd ngx_pagespeed-release-$PAGESPEED_VERSION/ ; tar zxvf ../$PAGESPEED_PSOL_VERSION.tar.gz ; cd .."
 fi
 displayandexec "Uncompress NGinx version $NGINX_VERSION" tar zxvf nginx-$NGINX_VERSION.tar.gz
 
@@ -293,17 +317,16 @@ fi
 # Summary
 echo ""
 echo "------------------------------------------------------------------------------"
-if [[ $WITH_NAXSI == "TRUE" ]]; then
-    echo "                NGinx + PHP5-FPM + Naxsi installation finished"
-else
-    echo "                    NGinx + PHP5-FPM installation finished"
-fi
+echo " NGinx + PHP5-FPM $MSG installation finished"
 echo "------------------------------------------------------------------------------"
 echo "NGinx configuration folder:       /etc/nginx"
 echo "NGinx default site configuration: /etc/nginx/sites-enabled/default-site"
 echo "NGinx default HTML root:          /var/www"
 if [[ $WITH_NAXSI == "TRUE" ]]; then
     echo "Read this to configure Naxsi:     https://github.com/nbs-system/naxsi/wiki/basicsetup"
+fi
+if [[ $WITH_PAGESPEED == "TRUE" ]]; then
+    echo "Read this to configure PageSpeed: https://developers.google.com/speed/pagespeed/module/configuration"
 fi
 echo ""
 echo "Installation script  log file:	$LOG_FILE"
