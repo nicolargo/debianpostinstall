@@ -2,7 +2,7 @@
 #
 # My own script to install/upgrade NGinx+PHP5_FPM+MemCached from sources
 #
-# Nicolargo - 01/2014
+# Nicolargo - 02/2014
 # LGPL
 #
 # Syntaxe: # su - -c "./nginxautoinstall.sh"
@@ -14,13 +14,13 @@ VERSION="1.159-144-129.01"
 # NGinx version to install
 # Use LEGACY, STABLE or DEV
 # - LEGACY or STABLE for a production server
-# - DEV for testing
+# - DEV for testing only
 
 VERSION_TO_INSTALL="STABLE"
 
 # Install Naxsi, the WAF for NGinx ?
-# - TRUE: yes install Naxsi
-# - FALSE: Do not install Naxsi
+# - TRUE: yes install it
+# - FALSE: Do not install it
 
 WITH_NAXSI="TRUE"
 
@@ -328,6 +328,7 @@ if [[ $WITH_NAXSI == "TRUE" ]]; then
     echo "Read this to configure Naxsi:     https://github.com/nbs-system/naxsi/wiki/basicsetup"
 fi
 if [[ $WITH_PAGESPEED == "TRUE" ]]; then
+    echo "PageSpeed cache directory:        $PAGESPEED_CACHE_DIR"  
     echo "Read this to configure PageSpeed: https://developers.google.com/speed/pagespeed/module/configuration"
 fi
 echo ""
