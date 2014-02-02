@@ -8,7 +8,7 @@
 # Syntaxe: # su - -c "./nginxautoinstall.sh"
 # Syntaxe: or # sudo ./nginxautoinstall.sh
 #
-VERSION="1.158-144-129.03"
+VERSION="1.159-144-129.01"
 
 ##############################
 # NGinx version to install
@@ -35,11 +35,12 @@ WITH_PAGESPEED="TRUE"
 # Current NGinx version
 NGINX_LEGACY_VERSION="1.2.9"
 NGINX_STABLE_VERSION="1.4.4"
-NGINX_DEV_VERSION="1.5.8"
+NGINX_DEV_VERSION="1.5.9"
 
 # PageSpeed version
 PAGESPEED_VERSION="1.7.30.3-beta"
 PAGESPEED_PSOL_VERSION="1.7.30.3"
+PAGESPEED_CACHE_DIR="/var/ngx_pagespeed_cache"
 
 # Functions
 #-----------------------------------------------------------------------------
@@ -250,6 +251,7 @@ fi
 if [[ $WITH_PAGESPEED == "TRUE" ]]; then
     displayandexec "Uncompress PageSpeed" $UNZIP release-$PAGESPEED_VERSION.zip
     displayandexec "Uncompress PageSpeed (PSOL)" "cd ngx_pagespeed-release-$PAGESPEED_VERSION/ ; tar zxvf ../$PAGESPEED_PSOL_VERSION.tar.gz ; cd .."
+    displayandexec "Create the PageSpeed cache directory" "mkdir -p $PAGESPEED_CACHE_DIR ; chown www-data:www-data $PAGESPEED_CACHE_DIR"
 fi
 displayandexec "Uncompress NGinx version $NGINX_VERSION" tar zxvf nginx-$NGINX_VERSION.tar.gz
 
