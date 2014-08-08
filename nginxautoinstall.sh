@@ -2,13 +2,13 @@
 #
 # My own script to install/upgrade NGinx+PHP5_FPM+MemCached from sources
 #
-# Nicolargo - 06/2014
+# Nicolargo - 08/2014
 # LGPL
 #
 # Syntaxe: # su - -c "./nginxautoinstall.sh"
 # Syntaxe: or # sudo ./nginxautoinstall.sh
 #
-VERSION="1.160.01"
+VERSION="1.161.01"
 
 ##############################
 # NGinx version to install
@@ -34,12 +34,12 @@ WITH_PAGESPEED="TRUE"
 
 # Current NGinx version
 NGINX_LEGACY_VERSION="1.4.7"
-NGINX_STABLE_VERSION="1.6.0"
-NGINX_DEV_VERSION="1.7.1"
+NGINX_STABLE_VERSION="1.6.1"
+NGINX_DEV_VERSION="1.7.4"
 
 # PageSpeed version
-PAGESPEED_VERSION="1.8.31.3-beta"
-PAGESPEED_PSOL_VERSION="1.8.31.3"
+PAGESPEED_VERSION="1.8.31.4-beta"
+PAGESPEED_PSOL_VERSION="1.8.31.4"
 PAGESPEED_CACHE_DIR="/var/ngx_pagespeed_cache"
 
 # Functions
