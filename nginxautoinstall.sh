@@ -2,13 +2,13 @@
 #
 # My own script to install/upgrade NGinx+PHP5_FPM+MemCached from sources
 #
-# Nicolargo - 08/2014
+# Nicolargo - 10/2014
 # LGPL
 #
 # Syntaxe: # su - -c "./nginxautoinstall.sh"
 # Syntaxe: or # sudo ./nginxautoinstall.sh
 #
-VERSION="1.161.01"
+VERSION="1.162.01"
 
 ##############################
 # NGinx version to install
@@ -33,13 +33,15 @@ WITH_PAGESPEED="TRUE"
 # !!!! Do not change the code bellow
 
 # Current NGinx version
+# See: http://nginx.org/en/download.html
 NGINX_LEGACY_VERSION="1.4.7"
-NGINX_STABLE_VERSION="1.6.1"
-NGINX_DEV_VERSION="1.7.4"
+NGINX_STABLE_VERSION="1.6.2"
+NGINX_DEV_VERSION="1.7.6"
 
 # PageSpeed version
-PAGESPEED_VERSION="1.8.31.4-beta"
-PAGESPEED_PSOL_VERSION="1.8.31.4"
+# https://github.com/pagespeed/ngx_pagespeed/releases
+PAGESPEED_VERSION="1.9.32.1-beta"
+PAGESPEED_PSOL_VERSION="1.9.32.1"
 PAGESPEED_CACHE_DIR="/var/ngx_pagespeed_cache"
 
 # Functions
@@ -51,7 +53,7 @@ displaymessage() {
 
 displaytitle() {
   displaymessage "------------------------------------------------------------------------------"
-  displaymessage "$*"  
+  displaymessage "$*"
   displaymessage "------------------------------------------------------------------------------"
 
 }
@@ -163,7 +165,7 @@ then
   displayandexec "Install the DotDeb repository" "wget http://www.dotdeb.org/dotdeb.gpg ; cat dotdeb.gpg | apt-key add - ; rm -f dotdeb.gpg"
 fi
 
-displayandexec "Install lsb_release" "apt-get install lsb-release"
+displayandexec "Install lsb_release" "$APT_GET install lsb-release"
 if [ `lsb_release -sc` == "wheezy" ]
 then
   # Wheezy (Debian 7)
@@ -171,7 +173,7 @@ then
   # Ajout DotDeb package (http://www.dotdeb.org/)
   grep -rq '^deb\ .*packages\.dotdeb' /etc/apt/sources.list.d/*.list /etc/apt/sources.list > /dev/null 2>&1
   if [ $? -ne 0 ]
-  then  
+  then
     echo -e "\n## DotDeb Package\ndeb http://packages.dotdeb.org wheezy all\ndeb-src http://packages.dotdeb.org wheezy all\n" >> /etc/apt/sources.list
   fi
 
@@ -182,7 +184,7 @@ then
   # Ajout DotDeb package (http://www.dotdeb.org/)
   grep -rq '^deb\ .*packages\.dotdeb' /etc/apt/sources.list.d/*.list /etc/apt/sources.list > /dev/null 2>&1
   if [ $? -ne 0 ]
-  then  
+  then
     echo -e "\n## DotDeb Package\ndeb http://packages.dotdeb.org squeeze all\ndeb-src http://packages.dotdeb.org squeeze all\n" >> /etc/apt/sources.list
   fi
 
@@ -192,7 +194,7 @@ else
   # Ajout DotDeb package (http://www.dotdeb.org/)
   grep -rq '^deb\ .*packages\.dotdeb' /etc/apt/sources.list.d/*.list /etc/apt/sources.list > /dev/null 2>&1
   if [ $? -ne 0 ]
-  then  
+  then
     echo -e "\n## DotDeb Package\ndeb http://packages.dotdeb.org oldstable all\ndeb-src http://packages.dotdeb.org oldstable all\n" >> /etc/apt/sources.list
   fi
 
@@ -209,7 +211,7 @@ fi
 displayandexec "Update the repositories list" $APT_GET update
 
 # Pre-requis
-displayandexec "Install development tools" $APT_GET install build-essential libpcre3-dev libssl-dev zlib1g-dev php5-dev unzip
+displayandexec "Install development tools" $APT_GET install build-essential libpcre3 libpcre3-dev libssl-dev zlib1g-dev php5-dev unzip
 displayandexec "Install PHP-FPM5" $APT_GET install php5-cli php5-common php5-mysql php5-fpm php-pear php5-gd php5-curl
 displayandexec "Install MemCached" $APT_GET install libcache-memcached-perl php5-memcache memcached
 # displayandexec "Install Redis" $APT_GET install redis-server php5-redis
@@ -328,7 +330,7 @@ if [[ $WITH_NAXSI == "TRUE" ]]; then
     echo "Read this to configure Naxsi:     https://github.com/nbs-system/naxsi/wiki/basicsetup"
 fi
 if [[ $WITH_PAGESPEED == "TRUE" ]]; then
-    echo "PageSpeed cache directory:        $PAGESPEED_CACHE_DIR"  
+    echo "PageSpeed cache directory:        $PAGESPEED_CACHE_DIR"
     echo "Read this to configure PageSpeed: https://developers.google.com/speed/pagespeed/module/configuration"
 fi
 echo ""
