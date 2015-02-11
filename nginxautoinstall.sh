@@ -36,7 +36,7 @@ WITH_PAGESPEED="TRUE"
 # See: http://nginx.org/en/download.html
 NGINX_LEGACY_VERSION="1.4.7"
 NGINX_STABLE_VERSION="1.6.2"
-NGINX_DEV_VERSION="1.7.6"
+NGINX_DEV_VERSION="1.7.10"
 
 # PageSpeed version
 # https://github.com/pagespeed/ngx_pagespeed/releases
