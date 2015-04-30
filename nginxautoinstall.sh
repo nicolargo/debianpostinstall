@@ -34,14 +34,14 @@ WITH_PAGESPEED="TRUE"
 
 # Current NGinx version
 # See: http://nginx.org/en/download.html
-NGINX_LEGACY_VERSION="1.4.7"
-NGINX_STABLE_VERSION="1.6.2"
-NGINX_DEV_VERSION="1.7.10"
+NGINX_LEGACY_VERSION="1.6.3"
+NGINX_STABLE_VERSION="1.8.0"
+NGINX_DEV_VERSION="1.9.0"
 
 # PageSpeed version
 # https://github.com/pagespeed/ngx_pagespeed/releases
-PAGESPEED_VERSION="1.9.32.1-beta"
-PAGESPEED_PSOL_VERSION="1.9.32.1"
+PAGESPEED_VERSION="1.9.32.3-beta"
+PAGESPEED_PSOL_VERSION="1.9.32.3"
 PAGESPEED_CACHE_DIR="/var/ngx_pagespeed_cache"
 
 # Functions
@@ -166,7 +166,13 @@ then
 fi
 
 displayandexec "Install lsb_release" "$APT_GET install lsb-release"
-if [ `lsb_release -sc` == "wheezy" ]
+if [ `lsb_release -sc` == "jessie" ]
+then
+  # Jessie (Debian 8)
+
+displaytitle "Php 5.6 already include in Jessie Repo "
+
+elif [ `lsb_release -sc` == "wheezy" ]
 then
   # Wheezy (Debian 7)
 
@@ -219,9 +225,12 @@ if [[ $NGINX_DEPS != "" ]]; then
   displayandexec "Install NGinx dependencies" $APT_GET install $NGINX_DEPS
 fi
 
-# php5-suhosin no longer available in Wheezy
-if [ `lsb_release -sc` == "wheezy" ]
+# php5-suhosin no longer available in Wheezy or Jessie
+if [ `lsb_release -sc` == "jessie" ]
 then
+displayandexec "Remove php5-suhosin" dpkg --purge php5-suhosin
+elif [ `lsb_release -sc` == "wheezy" ]
+  then
   displayandexec "Remove php5-suhosin" dpkg --purge php5-suhosin
 else
   displayandexec "Install php5-suhosin" $APT_GET install php5-suhosin
