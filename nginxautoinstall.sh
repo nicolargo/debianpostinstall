@@ -34,14 +34,14 @@ WITH_PAGESPEED="TRUE"
 
 # Current NGinx version
 # See: http://nginx.org/en/download.html
-NGINX_LEGACY_VERSION="1.4.7"
-NGINX_STABLE_VERSION="1.6.2"
-NGINX_DEV_VERSION="1.7.10"
+NGINX_LEGACY_VERSION="1.6.3"
+NGINX_STABLE_VERSION="1.8.0"
+NGINX_DEV_VERSION="1.9.0"
 
 # PageSpeed version
 # https://github.com/pagespeed/ngx_pagespeed/releases
-PAGESPEED_VERSION="1.9.32.1-beta"
-PAGESPEED_PSOL_VERSION="1.9.32.1"
+PAGESPEED_VERSION="1.9.32.3-beta"
+PAGESPEED_PSOL_VERSION="1.9.32.3"
 PAGESPEED_CACHE_DIR="/var/ngx_pagespeed_cache"
 
 # Functions
