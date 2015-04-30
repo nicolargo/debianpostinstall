@@ -166,7 +166,13 @@ then
 fi
 
 displayandexec "Install lsb_release" "$APT_GET install lsb-release"
-if [ `lsb_release -sc` == "wheezy" ]
+if [ `lsb_release -sc` == "jessie" ]
+then
+  # Jessie (Debian 8)
+
+displaytitle "Php 5.6 already include in Jessie Repo "
+
+elif [ `lsb_release -sc` == "wheezy" ]
 then
   # Wheezy (Debian 7)
 
@@ -219,9 +225,12 @@ if [[ $NGINX_DEPS != "" ]]; then
   displayandexec "Install NGinx dependencies" $APT_GET install $NGINX_DEPS
 fi
 
-# php5-suhosin no longer available in Wheezy
-if [ `lsb_release -sc` == "wheezy" ]
+# php5-suhosin no longer available in Wheezy or Jessie
+if [ `lsb_release -sc` == "jessie" ]
 then
+displayandexec "Remove php5-suhosin" dpkg --purge php5-suhosin
+elif [ `lsb_release -sc` == "wheezy" ]
+  then
   displayandexec "Remove php5-suhosin" dpkg --purge php5-suhosin
 else
   displayandexec "Install php5-suhosin" $APT_GET install php5-suhosin
